@@ -44,13 +44,6 @@ const user = sequelize.define('user',{
   }
 })
 
-sequelize.sync({force : true})
-
-module.exports = {
-  user: user
-}
-
-
 const topup = sequelize.define('topup',{
   id : {
     type : DataTypes.INTEGER,
@@ -64,12 +57,6 @@ const topup = sequelize.define('topup',{
     type : DataTypes.DOUBLE
   }
 })
-
-sequelize.sync({force : true})
-
-module.exports = {
-  topup: topup
-}
 
 const store = sequelize.define('store',{
   id : {
@@ -101,11 +88,6 @@ const store = sequelize.define('store',{
   }
 })
 
-sequelize.sync({force : true})
-
-module.exports = {
-  store: store
-}
 
 const product = sequelize.define('product',{
   id : {
@@ -130,13 +112,6 @@ const product = sequelize.define('product',{
   }
 })
 
-sequelize.sync({force : true})
-
-module.exports = {
-  product: product
-}
-
-
 const courier = sequelize.define('courier',{
   id : {
     type : DataTypes.INTEGER,
@@ -151,12 +126,6 @@ const courier = sequelize.define('courier',{
   }
 })
 
-sequelize.sync({force : true})
-
-module.exports = {
-  courier: courier
-}
-
 const order = sequelize.define('order',{
   id : {
     type : DataTypes.INTEGER,
@@ -165,20 +134,17 @@ const order = sequelize.define('order',{
   },
   total_harga :{
       type : DataTypes.DOUBLE
-  }
+  },
   status :{
       type : DataTypes.STRING
-  }
+  },
   payment_date :{
     type : DataTypes.DATE
   }
 })
 
-sequelize.sync({force : true})
 
-module.exports = {
-  order: order
-}
+
 
 const order_details = sequelize.define('order_details',{
   id : {
@@ -188,17 +154,11 @@ const order_details = sequelize.define('order_details',{
   },
   jumlah :{
       type : DataTypes.INTEGER
-  }
+  },
   harga :{
       type : DataTypes.DOUBLE
   }
 })
-
-sequelize.sync({force : true})
-
-module.exports = {
-  order_details: order_details
-}
 
 const shipping_details = sequelize.define('shipping_details',{
   id : {
@@ -220,11 +180,6 @@ const shipping_details = sequelize.define('shipping_details',{
   }
 })
 
-sequelize.sync({force : true})
-
-module.exports = {
-  shipping_details: shipping_details
-}
 
 user.hasMany(topup);
 topup.belongsTo(user);
@@ -251,3 +206,10 @@ product.hasMany(order_details);
 order_details.belongsTo(product);
 
 
+sequelize.sync({force : true})
+
+module.exports = {
+  order: order,
+  user:user,
+
+}
