@@ -210,6 +210,11 @@ sequelize.sync({force : true})
 
 module.exports = {
   order: order,
-  user:user,
-
+  user: user,
+  topup: topup,
+  store: store,
+  product: product,
+  courier: courier,
+  order_details: order_details,
+  shipping_details: shipping_details
 }
