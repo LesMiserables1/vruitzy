@@ -1,7 +1,7 @@
 # vruitzy
 e commerce app
 
-configurasi backend :
+configurasi backend :\
 a. awal konfigurasi
 1. install node and npm (https://nodejs.org/en/download/)
 2. clone repo ini
