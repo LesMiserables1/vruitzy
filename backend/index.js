@@ -6,12 +6,12 @@ let app = express()
 app.use(express.json())
 app.use(cors())
 
-app.post('/register',(req,res)=>{
+app.post('/user/register',(req,res)=>{
     let body = req.body
     res.send(200)
 })
 
-app.post('/login',async(req,res)=>{
+app.post('/user/login',async(req,res)=>{
     let body = req.body
     let passwordHash = crypto.createHash('sha256').update(body.password).digest('base64')
 
