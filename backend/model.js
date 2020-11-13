@@ -118,6 +118,13 @@ const courier = sequelize.define('courier',{
     primaryKey: true,
     autoIncrement : true
   },
+  email : {
+    type : DataTypes.STRING,
+    unique : true
+  },
+  password : {
+    type : DataTypes.STRING
+  },
   nama_courier :{
       type : DataTypes.STRING
   },
