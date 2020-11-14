@@ -130,6 +130,12 @@ const courier = sequelize.define('courier',{
   },
   nomor_hp : {
       type : DataTypes.STRING
+  },
+  alamat : {
+    type : DataTypes.STRING
+  },
+  kota : {
+    type : DataTypes.STRING
   }
 })
 
