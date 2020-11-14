@@ -48,6 +48,13 @@ app.post('/customer/login',async(req,res)=>{
 
 app.post('/customer/update',verifyToken,async(req,res)=>{
     let body = req.body
+
+    if(req.decode.role != 'customer'){
+        res.send({
+            "status" : "failed",
+            "msg" : "role is incorrect"
+        })
+    }
     let customer = await model.customer.findOne({id : req.decode.id})
     customer.alamat = body.alamat
     customer.nama = body.nama
