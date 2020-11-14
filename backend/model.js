@@ -8,7 +8,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME,pro
 })
 
 // buat model untuk tiap table pada database
-const user = sequelize.define('user',{
+const customer = sequelize.define('customer',{
   id : { 
     type : DataTypes.INTEGER,
     primaryKey: true,
@@ -188,8 +188,8 @@ const shipping_details = sequelize.define('shipping_details',{
 })
 
 
-user.hasMany(topup);
-topup.belongsTo(user);
+customer.hasMany(topup);
+topup.belongsTo(customer);
 
 store.hasMany(product);
 product.belongsTo(store);
@@ -200,8 +200,8 @@ order_details.belongsTo(order);
 order.hasOne(shipping_details);
 shipping_details.belongsTo(order);
 
-user.hasMany(order);
-order.belongsTo(user);
+customer.hasMany(order);
+order.belongsTo(customer);
 
 store.hasMany(order);
 order.belongsTo(store);
@@ -217,7 +217,7 @@ sequelize.sync({force : true})
 
 module.exports = {
   order: order,
-  user: user,
+  customer: customer,
   topup: topup,
   store: store,
   product: product,

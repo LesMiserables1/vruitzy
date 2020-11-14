@@ -2,31 +2,42 @@ const express = require('express')
 const cors = require('cors')
 const model = require('./model.js')
 const crypto = require('crypto')
-var jwt = require("jsonwebtoken");
-
+const jwt = require("jsonwebtoken");
+const verifyToken = require('./verify.js')
 let app = express()
 app.use(express.json())
 app.use(cors())
 
 
-app.post('/user/register',(req,res)=>{
-    let body = req.body
-    res.send(200)
-})
-
-app.post('/user/login',async(req,res)=>{
+app.post('/customer/register',async(req,res)=>{
     let body = req.body
     let passwordHash = crypto.createHash('sha256').update(body.password).digest('base64')
 
-    const user = await db.user.findOne({ where: { username: body.username, password: passwordHash } })
-    if (user == null) {
+    const customer = await model.customer.create({
+        "email" : body.email,
+        "password" : passwordHash
+    })
+    res.send({
+        status : 'ok'
+    })
+})
+
+
+
+app.post('/customer/login',async(req,res)=>{
+    let body = req.body
+    let passwordHash = crypto.createHash('sha256').update(body.password).digest('base64')
+
+    const customer = await model.customer.findOne({ where: { email: body.email, password: passwordHash } })
+    if (customer == null) {
         return res.send({
             "status": "failed",
             "message": "wrong credential"
         })
     }
     let payload = {
-        "username": body.username
+        "role" : "customer",
+        "id" : customer.id
     }
     const token = jwt.sign(payload, process.env.SECRET_KEY)
     return res.send({
@@ -34,6 +45,21 @@ app.post('/user/login',async(req,res)=>{
         token
     })
 })
+
+app.post('/customer/update',verifyToken,async(req,res)=>{
+    let body = req.body
+    let customer = await model.customer.findOne({id : req.decode.id})
+    customer.alamat = body.alamat
+    customer.nama = body.nama
+    customer.nomor_hp = body.nomor_hp
+    customer.kota = body.kota
+    customer.tanggal_lahir = body.tanggal_lahir
+    customer.save()
+    
+    res.send({
+        status : "ok"
+    })
+})  
 
 /* 
     TODO :
