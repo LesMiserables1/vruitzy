@@ -261,7 +261,8 @@ app.post('/order/make', verifyToken, async(req, res) => {
 
     //bikin record order
     var order = model.order_details.create({
-        status: "UNPAID"
+        status: "UNPAID",
+        customerId: req.decode.id
     })
 
     //bikin order detail untuk tiap jenis product yang dibeli
@@ -306,9 +307,9 @@ app.post('/order/payment/', async(req, res) => {
     )
     
     var user = model.customer.findOne({
-        where: { id: order.userId}}
+        where: { id: order.customerId}}
     );
-    //itung sisa saldo user
+    //itung sisa saldo 
     var sisa =  user.saldo - order.total_harga
     if (sisa <0){
         return res.send({
