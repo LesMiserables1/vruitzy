@@ -16,16 +16,21 @@ app.post('/customer/register',async(req,res)=>{
     let body = req.body
     let passwordHash = crypto.createHash('sha256').update(body.password).digest('base64')
 
-    const customer = await model.customer.create({
-        "email" : body.email,
-        "password" : passwordHash
-    })
-    res.send({
-        status : 'ok'
-    })
+    try {
+        const customer = await model.customer.create({
+            "email" : body.email,
+            "password" : passwordHash
+        })   
+        return res.send({
+            status : 'ok'
+        })
+    } catch (error) {
+        return res.send({
+            status : 'failed',
+            msg : "email is already registered"
+        })
+    }
 })
-
-
 
 app.post('/customer/login',async(req,res)=>{
     let body = req.body
@@ -35,7 +40,7 @@ app.post('/customer/login',async(req,res)=>{
     if (customer == null) {
         return res.send({
             "status": "failed",
-            "message": "wrong credential"
+            "message": "kredensial salah"
         })
     }
     let payload = {
@@ -59,6 +64,12 @@ app.post('/customer/update',verifyToken,async(req,res)=>{
         })
     }
     let customer = await model.customer.findOne({id : req.decode.id})
+    if(customer == null){
+        return res.send({
+            "status" : "failed",
+            "msg" : "user does not exist"
+        })
+    }
     customer.alamat = body.alamat
     customer.nama = body.nama
     customer.nomor_hp = body.nomor_hp
@@ -66,7 +77,7 @@ app.post('/customer/update',verifyToken,async(req,res)=>{
     customer.tanggal_lahir = body.tanggal_lahir
     customer.save()
     
-    res.send({
+    return res.send({
         status : "ok"
     })
 })  
@@ -74,32 +85,46 @@ app.post('/customer/update',verifyToken,async(req,res)=>{
 app.post('/customer/retrieve/data',verifyToken,async(req,res)=>{
     
     if(req.decode.role != 'customer'){
-        res.send({
+        return res.send({
             "status" : "failed",
             "msg" : "role is incorrect"
         })
     }
+
+
     const customer = await model.customer.findOne({id : req.decode.id})
-    
-    res.send({
+    if(customer == null){
+        return res.send({
+            "status" : "failed",
+            "msg" : 'user does not exist'
+        })
+    }
+    return res.send({
         "status" : 'ok',
         "data" : customer
     })
 })
 
-// api untuk store
 
+// api untuk store
 app.post('/store/register',async(req,res)=>{
     let body = req.body
     let passwordHash = crypto.createHash('sha256').update(body.password).digest('base64')
 
-    const customer = await model.store.create({
-        "email" : body.email,
-        "password" : passwordHash
-    })
-    res.send({
-        status : 'ok'
-    })
+    try {
+        const customer = await model.store.create({
+            "email" : body.email,
+            "password" : passwordHash
+        })
+        return res.send({
+            status : 'ok'
+        })   
+    } catch (error) {
+        return res.send({
+            status : "failed"
+        })    
+    }
+    
 })
 
 app.post('/store/login',async(req,res)=>{
@@ -160,6 +185,7 @@ app.post('/store/retrieve/data',verifyToken,async(req,res)=>{
         "data" : store
     })
 })
+
 /* 
     TODO :
     1. validasi role client apakah transport atau bukan
