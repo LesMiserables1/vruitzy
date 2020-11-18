@@ -5,8 +5,7 @@ const crypto = require('crypto')
 const jwt = require("jsonwebtoken");
 const verifyToken = require('./verify.js');
 const { store } = require('./model.js');
-const { Sequelize } = require('sequelize/types');
-const {Op} = require(Sequelize)
+const {Op} = require('sequelize')
 let app = express()
 app.use(express.json())
 app.use(cors())
@@ -187,7 +186,7 @@ app.post('/store/retrieve/data',verifyToken,async(req,res)=>{
 })
 
 // api untuk product
-app.post('/store/create/product',verifyToken,(req,res)=>{
+app.post('/store/create/product',verifyToken,async(req,res)=>{
     
     let body = req.body
     if(req.decode.role != 'store'){
@@ -198,7 +197,7 @@ app.post('/store/create/product',verifyToken,(req,res)=>{
     }
     try {
         let product = await model.product.create({
-            nama_product : body.name_product,
+            nama_product : body.nama_product,
             jenis_buah : body.jenis_buah,
             stok : body.stok,
             harga : body.harga,
@@ -215,7 +214,7 @@ app.post('/store/create/product',verifyToken,(req,res)=>{
 
 })
 
-app.post('/store/update/product',async (req,res)=>{
+app.post('/store/update/product',verifyToken,async (req,res)=>{
     let body = req.body
     if(req.decode.role != 'store'){
         return res.send({
@@ -260,7 +259,7 @@ app.post('/store/retrieve/product',verifyToken,async(req,res)=>{
     })
 })
 
-app.get('/customer/search/product',verifyToken,async(req,res)=>{
+app.post('/customer/search/product',verifyToken,async(req,res)=>{
     if(req.decode.role != 'customer'){
         return res.send({
             "status" : "failed",
@@ -271,8 +270,8 @@ app.get('/customer/search/product',verifyToken,async(req,res)=>{
     let body = req.body
     let product = await model.product.findAll({
         where :{
-            name_product : {
-                [Op.like] : `%${body.name}%`
+            nama_product : {
+                [Op.like] : `%${body.query}%`
             }
         }
     })
@@ -281,6 +280,39 @@ app.get('/customer/search/product',verifyToken,async(req,res)=>{
         data : product
     })
 })
+app.post('/store/delete/product/', verifyToken, async(req, res) => {
+    let body = req.body
+
+    if(req.decode.role != 'store'){
+        res.send({
+            "status" : "failed",
+            "msg" : "role is incorrect"
+        })
+    }
+
+    await model.product.destroy({
+        where: { id: body.id }
+    })   
+    res.send({
+        status : "ok"
+    })
+})
+app.post('/customer/retrieve/product',verifyToken,async(req,res)=>{
+    if(req.decode.role != 'customer'){
+        return res.send({
+            "status" : "failed",
+            "msg" : "role is incorrect"
+        })
+    }
+
+    let product = await model.product.findAll()
+
+    return res.send({
+        "status" : "ok",
+        data : product
+    })
+})
+
 
 /* 
     TODO :
@@ -481,81 +513,5 @@ app.post('/order/retrieve/data', async(req,res)=>{
         "details" : details
     })
 })
-
-//api untuk product
-app.post('/product/add', verifyToken, async(req, res) => {
-    let body = req.body
-    
-    if(req.decode.role != 'store'){
-        res.send({
-            "status" : "failed",
-            "msg" : "role is incorrect"
-        })
-    }
-    
-    model.product.create({
-        nama_product: body.name,
-        jenis_buah: body.jenis_buah,
-        stok: body.stok,
-        harga: body.harga,
-        storeId: req.decode.id
-    })
-    res.send({
-        status: "created",
-        message: "Product added!",
-    });
-})
-
-app.delete('/product/delete/', verifyToken, (req, res) => {
-    let body = req.body
-    
-    if(req.decode.role != 'store'){
-        res.send({
-            "status" : "failed",
-            "msg" : "role is incorrect"
-        })
-    }
-    
-    model.product.destroy({
-        where: { id: body.id }
-    })   
-    res.send({
-        message: "Product deleted!"
-    })
-})
-
-app.post('/product/update', verifyToken, (req, res) => {
-    let body = req.body
-    
-    if(req.decode.role != 'store'){
-        res.send({
-            "status" : "failed",
-            "msg" : "role is incorrect"
-        })
-    }
-
-    model.product.update(
-        {   nama_product: body.name,
-            jenis_buah: body.jenis_buah,
-            stok: body.stok,
-            harga: body.harga
-        },
-        { where: { id: body.id } }
-    )
-
-    res.send({
-        status : "ok"
-    })
-})
-
-app.post('/product/view', async(req, res) => {
-    let body = req.body
-    const data = await model.product.findAll({where: {storeId : body.id}})
-    res.send({
-        "status" : 'ok',
-        "data" : data
-    });
-})
-
 
 app.listen(4000)

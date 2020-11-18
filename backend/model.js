@@ -219,7 +219,7 @@ product.hasMany(order_details);
 order_details.belongsTo(product);
 
 
-sequelize.sync({force : true})
+sequelize.sync({force : false})
 
 module.exports = {
   order: order,
