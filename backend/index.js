@@ -5,6 +5,8 @@ const crypto = require('crypto')
 const jwt = require("jsonwebtoken");
 const verifyToken = require('./verify.js');
 const { store } = require('./model.js');
+const { Sequelize } = require('sequelize/types');
+const {Op} = require(Sequelize)
 let app = express()
 app.use(express.json())
 app.use(cors())
@@ -173,7 +175,7 @@ app.post('/store/update',verifyToken,async(req,res)=>{
 app.post('/store/retrieve/data',verifyToken,async(req,res)=>{
     
     if(req.decode.role != 'store'){
-        res.send({
+        return res.send({
             "status" : "failed",
             "msg" : "role is incorrect"
         })
@@ -183,6 +185,102 @@ app.post('/store/retrieve/data',verifyToken,async(req,res)=>{
     res.send({
         "status" : 'ok',
         "data" : store
+    })
+})
+
+// api untuk product
+app.post('/store/create/product',verifyToken,(req,res)=>{
+    
+    let body = req.body
+    if(req.decode.role != 'store'){
+        return res.send({
+            "status" : "failed",
+            "msg" : "role is incorrect"
+        })
+    }
+    try {
+        let product = await model.product.create({
+            nama_product : body.name_product,
+            jenis_buah : body.jenis_buah,
+            stok : body.stok,
+            harga : body.harga,
+            storeId : req.decode.id
+        })
+        return res.send({
+            "status" : 'ok'
+        })
+    } catch (error) {
+        return res.send({
+            "status" : "failed"
+        })
+    }
+
+})
+
+app.post('/store/update/product',async (req,res)=>{
+    let body = req.body
+    if(req.decode.role != 'store'){
+        return res.send({
+            "status" : "failed",
+            "msg" : "role is incorrect"
+        })
+    }
+    let product = await model.product.findOne({
+        id : body.id,
+    })
+    if(product == null){
+        return res.send({
+            "status" : "failed"
+        })
+    }
+    product.name_product = body.name_product
+    product.jenis_buah = body.jenis_buah
+    product.stok = body.stok
+    product.harga = body.harga
+    
+    product.save()
+
+    return res.send({
+        "status" : "ok"
+    })
+})
+app.post('/store/retrieve/product',verifyToken,async(req,res)=>{
+    if(req.decode.role != 'store'){
+        return res.send({
+            "status" : "failed",
+            "msg" : "role is incorrect"
+        })
+    }
+
+    let product = await model.product.findAll({
+        storeId : req.decode.id
+    })
+
+    return res.send({
+        status:'ok',
+        data: product
+    })
+})
+
+app.get('/customer/search/product',verifyToken,async(req,res)=>{
+    if(req.decode.role != 'customer'){
+        return res.send({
+            "status" : "failed",
+            "msg" : "role is incorrect"
+        })
+    }
+
+    let body = req.body
+    let product = await model.product.findAll({
+        where :{
+            name_product : {
+                [Op.like] : `%${body.name}%`
+            }
+        }
+    })
+    return res.send({
+        "status" : "ok",
+        data : product
     })
 })
 
