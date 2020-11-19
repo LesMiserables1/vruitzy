@@ -136,6 +136,9 @@ const courier = sequelize.define('courier',{
   },
   kota : {
     type : DataTypes.STRING
+  },
+  saldo : {
+    type : DataTypes.INTEGER
   }
 })
 
@@ -173,7 +176,7 @@ const order_details = sequelize.define('order_details',{
   }
 })
 
-const shipping_details = sequelize.define('shipping_details',{
+const shipping_details = sequelize.define('shipping_detail',{
   id : {
     type : DataTypes.INTEGER,
     primaryKey: true,
@@ -182,7 +185,7 @@ const shipping_details = sequelize.define('shipping_details',{
   alamat_sender :{
       type : DataTypes.STRING
   },
-  alamat_reciever :{
+  alamat_receiver :{
       type : DataTypes.STRING
   },
   shipping_type : {
@@ -190,6 +193,9 @@ const shipping_details = sequelize.define('shipping_details',{
   },
   fee : {
       type: DataTypes.DOUBLE
+  },
+  status : {
+    type : DataTypes.STRING
   }
 })
 
@@ -219,7 +225,7 @@ product.hasMany(order_details);
 order_details.belongsTo(product);
 
 
-sequelize.sync({force : false})
+sequelize.sync({force : true})
 
 module.exports = {
   order: order,
