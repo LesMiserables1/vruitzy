@@ -32,7 +32,8 @@ const customer = sequelize.define('customer', {
     type: DataTypes.STRING
   },
   saldo: {
-    type: DataTypes.DOUBLE
+    type: DataTypes.DOUBLE,
+    defaultValue : 0
   },
   nomor_hp: {
     type: DataTypes.STRING
@@ -82,7 +83,8 @@ const store = sequelize.define('store', {
     type: DataTypes.STRING
   },
   saldo: {
-    type: DataTypes.DOUBLE
+    type: DataTypes.DOUBLE,
+    defaultValue : 0
   },
   nomor_hp: {
     type: DataTypes.STRING
@@ -142,7 +144,8 @@ const courier = sequelize.define('courier', {
     type: DataTypes.STRING
   },
   saldo: {
-    type: DataTypes.INTEGER
+    type: DataTypes.DOUBLE,
+    defaultValue : 0
   }
 })
 
@@ -204,7 +207,8 @@ const shipping_details = sequelize.define('shipping_detail', {
     type: DataTypes.STRING
   },
   status: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    defaultValue : "OUT"
   }
 })
 

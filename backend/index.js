@@ -5,7 +5,6 @@ const crypto = require('crypto')
 const jwt = require("jsonwebtoken");
 const verifyToken = require('./verify.js');
 const { Op } = require('sequelize');
-const { customer } = require('./model.js');
 
 let app = express()
 app.use(express.json())
@@ -128,6 +127,7 @@ app.post('/customer/search/product', verifyToken, async (req, res) => {
 
     let body = req.body
     let product = await model.product.findAll({
+        include : model.store,
         where: {
             nama_product: {
                 [Op.like]: `%${body.query}%`
@@ -142,7 +142,7 @@ app.post('/customer/search/product', verifyToken, async (req, res) => {
 
 
 // api untuk mendapatkan product
-app.post('/customer/retrieve/product', verifyToken, async (req, res) => {
+app.post('/customer/get/products', verifyToken, async (req, res) => {
     if (req.decode.role != 'customer') {
         return res.send({
             "status": "failed",
@@ -150,7 +150,9 @@ app.post('/customer/retrieve/product', verifyToken, async (req, res) => {
         })
     }
 
-    let product = await model.product.findAll()
+    let product = await model.product.findAll({
+        include : model.store,
+    })
 
     return res.send({
         "status": "ok",
@@ -158,6 +160,24 @@ app.post('/customer/retrieve/product', verifyToken, async (req, res) => {
     })
 })
 
+app.post('/customer/retrieve/product',verifyToken,async(req,res)=>{
+    if (req.decode.role != 'customer') {
+        return res.send({
+            "status": "failed",
+            "msg": "role is incorrect"
+        })
+    }
+    let body = req.body
+    let product = await model.product.findOne(
+        {
+            include : model.store,
+            where : {id : body.productId}
+    })
+    return res.send({
+        "status" : "ok",
+        data : product
+    })
+})
 app.post('/customer/retrieve/order',verifyToken,async(req,res)=>{
     let body = req.body
     if (req.decode.role != 'customer') {
@@ -534,15 +554,28 @@ app.post('/transport/retrieve/data', verifyToken, async (req, res) => {
 // api untuk mendapatkan shipment details
 app.post('/retrieve/shipment/details', verifyToken, async (req, res) => {
 
+    let body = req.body
     if (req.decode.role != 'transport') {
         res.send({
             "status": "failed",
             "msg": "role is incorrect"
         })
     }
-    let data = await model.shipping_details.findAll({
-        where: { courierId: req.body.courierId }
-    })
+    let data = await model.shipping_details.findAll(
+        {
+            include : [
+                {
+                    model : model.typeShipment,
+                    where: { courierId: req.decode.id }
+                },
+                {
+                    model : model.order,
+                    include : [model.store,model.customer]
+                }
+            ],
+            where : {status : body.filter}
+        }
+    )
     return res.send({
         "status": 'ok',
         "data": data
@@ -688,12 +721,24 @@ app.post('/customer/order/payment/', async (req, res) => {
 
 })
 
-app.post('/order/retrieve/data', async (req, res) => {
-    let body = req.body
-    const order = await model.order.findOne({ include: model.order_details }, { where: { id: body.orderId } })
-    return res.send({
-        "status": 'ok',
-        "data": order,
-    })
-})
+// app.post('/order/retrieve/data', async (req, res) => {
+//     let body = req.body
+
+//     let order = await model.order.findOne(
+//         {
+//             include : [
+//                 model.shipping_details,
+//                 {
+//                     model : model.order_details,
+//                     include : model.product
+//                 }
+//                 ],
+//             where : { orderId :  , status : "PAID" }
+//         }
+//     )
+//     return res.send({
+//         "status": 'ok',
+//         "data": order,
+//     })
+// })
 app.listen(process.env.APP_PORT)
