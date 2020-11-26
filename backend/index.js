@@ -4,13 +4,16 @@ const model = require('./model.js')
 const crypto = require('crypto')
 const jwt = require("jsonwebtoken");
 const verifyToken = require('./verify.js');
-const { store } = require('./model.js');
-const { Op } = require('sequelize')
+const { Op } = require('sequelize');
+const { customer } = require('./model.js');
+
 let app = express()
 app.use(express.json())
 app.use(cors())
 
-// api untuk customer
+app.use(express.static('../frontend/PPL'))
+
+// api untuk register customer
 app.post('/customer/register', async (req, res) => {
     let body = req.body
     let passwordHash = crypto.createHash('sha256').update(body.password).digest('base64')
@@ -18,7 +21,10 @@ app.post('/customer/register', async (req, res) => {
     try {
         const customer = await model.customer.create({
             "email": body.email,
-            "password": passwordHash
+            "password": passwordHash,
+            "username": body.username,
+            "alamat": body.alamat,
+            "nama": body.nama
         })
         return res.send({
             status: 'ok'
@@ -31,6 +37,7 @@ app.post('/customer/register', async (req, res) => {
     }
 })
 
+// api untuk login customer
 app.post('/customer/login', async (req, res) => {
     let body = req.body
     let passwordHash = crypto.createHash('sha256').update(body.password).digest('base64')
@@ -53,6 +60,7 @@ app.post('/customer/login', async (req, res) => {
     })
 })
 
+// api untuk update data customer
 app.post('/customer/update', verifyToken, async (req, res) => {
     let body = req.body
 
@@ -69,11 +77,17 @@ app.post('/customer/update', verifyToken, async (req, res) => {
             "msg": "user does not exist"
         })
     }
-    customer.alamat = body.alamat
-    customer.nama = body.nama
-    customer.nomor_hp = body.nomor_hp
-    customer.kota = body.kota
-    customer.tanggal_lahir = body.tanggal_lahir
+
+    if (body.alamat)
+        customer.alamat = body.alamat
+    if (body.nama)
+        customer.nama = body.nama
+    if (body.nomor_hp)
+        customer.nomor_hp = body.nomor_hp
+    if (body.kota)
+        customer.kota = body.kota
+    if (body.tanggal_lahir)
+        customer.tanggal_lahir = body.tanggal_lahir
     customer.save()
 
     return res.send({
@@ -81,6 +95,7 @@ app.post('/customer/update', verifyToken, async (req, res) => {
     })
 })
 
+// api untuk mendapatkan data customer
 app.post('/customer/retrieve/data', verifyToken, async (req, res) => {
 
     if (req.decode.role != 'customer') {
@@ -89,9 +104,7 @@ app.post('/customer/retrieve/data', verifyToken, async (req, res) => {
             "msg": "role is incorrect"
         })
     }
-
-
-    const customer = await model.customer.findOne({ id: req.decode.id })
+    const customer = await model.customer.findByPk(req.decode.id)
     if (customer == null) {
         return res.send({
             "status": "failed",
@@ -104,8 +117,88 @@ app.post('/customer/retrieve/data', verifyToken, async (req, res) => {
     })
 })
 
+// api untuk search product customer
+app.post('/customer/search/product', verifyToken, async (req, res) => {
+    if (req.decode.role != 'customer') {
+        return res.send({
+            "status": "failed",
+            "msg": "role is incorrect"
+        })
+    }
 
-// api untuk store
+    let body = req.body
+    let product = await model.product.findAll({
+        where: {
+            nama_product: {
+                [Op.like]: `%${body.query}%`
+            }
+        }
+    })
+    return res.send({
+        "status": "ok",
+        data: product
+    })
+})
+
+
+// api untuk mendapatkan product
+app.post('/customer/retrieve/product', verifyToken, async (req, res) => {
+    if (req.decode.role != 'customer') {
+        return res.send({
+            "status": "failed",
+            "msg": "role is incorrect"
+        })
+    }
+
+    let product = await model.product.findAll()
+
+    return res.send({
+        "status": "ok",
+        data: product
+    })
+})
+
+app.post('/customer/retrieve/order',verifyToken,async(req,res)=>{
+    let body = req.body
+    if (req.decode.role != 'customer') {
+        return res.send({
+            "status": "failed",
+            "msg": "role is incorrect"
+        })
+    }
+    let order = await model.order.findAll(
+        {
+            include : [
+                model.shipping_details,
+                {
+                    model : model.order_details,
+                    include : model.product
+                }
+                ],
+            where : { customerId : req.decode.id}
+        }
+    )
+    return res.send({
+        status : "ok",
+        data : order
+    })
+})
+app.post('/customer/topup', verifyToken, async (req, res) => {
+    let body = req.body
+    if (req.decode.role != 'customer') {
+        return res.send({
+            "status": "failed",
+            "msg": "role is incorrect"
+        })
+    }
+    let customer = await model.customer.findByPk(req.decode.id)
+    customer.saldo = customer.saldo + body.saldo
+    customer.save()
+    return res.send({
+        status: 'ok'
+    })
+})
+// api untuk register store
 app.post('/store/register', async (req, res) => {
     let body = req.body
     let passwordHash = crypto.createHash('sha256').update(body.password).digest('base64')
@@ -113,7 +206,10 @@ app.post('/store/register', async (req, res) => {
     try {
         const customer = await model.store.create({
             "email": body.email,
-            "password": passwordHash
+            "password": passwordHash,
+            "nama_toko": body.nama_toko,
+            "alamat": body.alamat,
+            "nama": body.nama
         })
         return res.send({
             status: 'ok'
@@ -126,6 +222,7 @@ app.post('/store/register', async (req, res) => {
 
 })
 
+// api untuk login store
 app.post('/store/login', async (req, res) => {
     let body = req.body
     let passwordHash = crypto.createHash('sha256').update(body.password).digest('base64')
@@ -148,6 +245,7 @@ app.post('/store/login', async (req, res) => {
     })
 })
 
+// api untuk update data store
 app.post('/store/update', verifyToken, async (req, res) => {
     let body = req.body
     console.log(req.decode)
@@ -157,11 +255,15 @@ app.post('/store/update', verifyToken, async (req, res) => {
             "msg": "role is incorrect"
         })
     }
-    let store = await model.store.findOne({ id: req.decode.id })
-    store.alamat = body.alamat
-    store.nama_toko = body.nama_toko
-    store.nomor_hp = body.nomor_hp
-    store.kota = body.kota
+    let store = await model.store.findByPk(req.decode.id)
+    if (body.alamat)
+        store.alamat = body.alamat
+    if (body.nama_toko)
+        store.nama_toko = body.nama_toko
+    if (body.nomor_hp)
+        store.nomor_hp = body.nomor_hp
+    if (body.kota)
+        store.kota = body.kota
     store.save()
 
     res.send({
@@ -169,6 +271,7 @@ app.post('/store/update', verifyToken, async (req, res) => {
     })
 })
 
+// api untuk mengambil data store
 app.post('/store/retrieve/data', verifyToken, async (req, res) => {
 
     if (req.decode.role != 'store') {
@@ -177,7 +280,7 @@ app.post('/store/retrieve/data', verifyToken, async (req, res) => {
             "msg": "role is incorrect"
         })
     }
-    const store = await model.store.findOne({ id: req.decode.id })
+    const store = await model.store.findByPk(req.decode.id)
 
     res.send({
         "status": 'ok',
@@ -185,7 +288,7 @@ app.post('/store/retrieve/data', verifyToken, async (req, res) => {
     })
 })
 
-// api untuk product
+// api untuk membuat product
 app.post('/store/create/product', verifyToken, async (req, res) => {
 
     let body = req.body
@@ -207,6 +310,7 @@ app.post('/store/create/product', verifyToken, async (req, res) => {
             "status": 'ok'
         })
     } catch (error) {
+        console.log(error)
         return res.send({
             "status": "failed"
         })
@@ -214,6 +318,7 @@ app.post('/store/create/product', verifyToken, async (req, res) => {
 
 })
 
+// api untuk mengupdate product
 app.post('/store/update/product', verifyToken, async (req, res) => {
     let body = req.body
     if (req.decode.role != 'store') {
@@ -222,18 +327,19 @@ app.post('/store/update/product', verifyToken, async (req, res) => {
             "msg": "role is incorrect"
         })
     }
-    let product = await model.product.findOne({
-        id: body.id,
-    })
+    let product = await model.product.findByPk(body.productId)
     if (product == null) {
         return res.send({
             "status": "failed"
         })
     }
-    product.name_product = body.name_product
-    product.jenis_buah = body.jenis_buah
-    product.stok = body.stok
-    product.harga = body.harga
+
+    if (body.nama_product)
+        product.nama_product = body.nama_product
+    if (body.stok)
+        product.stok = body.stok
+    if (body.harga)
+        product.harga = body.harga
 
     product.save()
 
@@ -241,7 +347,9 @@ app.post('/store/update/product', verifyToken, async (req, res) => {
         "status": "ok"
     })
 })
-app.post('/store/retrieve/product', verifyToken, async (req, res) => {
+
+// api untuk mendapatkan products
+app.post('/store/get/products', verifyToken, async (req, res) => {
     if (req.decode.role != 'store') {
         return res.send({
             "status": "failed",
@@ -249,37 +357,32 @@ app.post('/store/retrieve/product', verifyToken, async (req, res) => {
         })
     }
 
-    let product = await model.product.findAll({
-        storeId: req.decode.id
-    })
-
+    let product = await model.product.findAll({ where: { storeId: req.decode.id } })
     return res.send({
         status: 'ok',
         data: product
     })
 })
 
-app.post('/customer/search/product', verifyToken, async (req, res) => {
-    if (req.decode.role != 'customer') {
+// api untuk mendapatkan data product
+app.post('/store/retrieve/product', verifyToken, async (req, res) => {
+    if (req.decode.role != 'store') {
         return res.send({
             "status": "failed",
             "msg": "role is incorrect"
         })
     }
-
     let body = req.body
-    let product = await model.product.findAll({
-        where: {
-            nama_product: {
-                [Op.like]: `%${body.query}%`
-            }
-        }
-    })
+    let product = await model.product.findByPk(body.productId, { include: model.order_details })
+    let sold = product.order_details.length
     return res.send({
-        "status": "ok",
-        data: product
+        status: 'ok',
+        data: product,
+        sold: sold
     })
 })
+
+// api untuk menghapus product
 app.post('/store/delete/product/', verifyToken, async (req, res) => {
     let body = req.body
 
@@ -291,34 +394,38 @@ app.post('/store/delete/product/', verifyToken, async (req, res) => {
     }
 
     await model.product.destroy({
-        where: { id: body.id }
+        where: { id: body.productId }
     })
-    res.send({
+    return res.send({
         status: "ok"
     })
 })
-app.post('/customer/retrieve/product', verifyToken, async (req, res) => {
-    if (req.decode.role != 'customer') {
-        return res.send({
+
+app.post('/store/retrieve/order',verifyToken,async(req,res)=>{
+    if (req.decode.role != 'store') {
+        res.send({
             "status": "failed",
             "msg": "role is incorrect"
         })
     }
-
-    let product = await model.product.findAll()
-
+    let order = await model.order.findAll(
+        {
+            include : [
+                model.shipping_details,
+                {
+                    model : model.order_details,
+                    include : model.product
+                }
+                ],
+            where : { storeId : req.decode.id , status : "PAID" }
+        }
+    )
     return res.send({
-        "status": "ok",
-        data: product
+        status : 'ok',
+        data : order
     })
 })
-
-
-/* 
-    TODO :
-    1. validasi role client apakah transport atau bukan
-    2. validasi fungsi api
-*/
+// api untuk register transport
 app.post('/transport/register', async (req, res) => {
     let body = req.body
     let passwordHash = crypto.createHash('sha256').update(body.password).digest('base64')
@@ -334,14 +441,14 @@ app.post('/transport/register', async (req, res) => {
         })
     } catch (error) {
         return res.send({
-            "status" : "failed",
-            "msg" : "email is already registered"
-        }) 
+            "status": "failed",
+            "msg": "email is already registered"
+        })
     }
 
 })
 
-
+// api login transport
 app.post('/transport/login', async (req, res) => {
     let body = req.body
     let passwordHash = crypto.createHash('sha256').update(req.body.password).digest('base64')
@@ -364,6 +471,7 @@ app.post('/transport/login', async (req, res) => {
     })
 })
 
+// api untuk update transport
 app.post('/transport/update', verifyToken, async (req, res) => {
     let body = req.body
 
@@ -373,16 +481,20 @@ app.post('/transport/update', verifyToken, async (req, res) => {
             "msg": "role is incorrect"
         })
     }
-    let transport = await model.courier.findOne({ id: req.decode.id })
-    if(transport == null){
+    let transport = await model.courier.findOne(req.decode.id)
+    if (transport == null) {
         return res.send({
-            "status" : "failed"
+            "status": "failed"
         })
     }
-    transport.alamat = body.alamat
-    transport.nama_courier = body.nama_courier
-    transport.nomor_hp = body.nomor_hp
-    transport.kota = body.kota
+    if (body.alamat)
+        transport.alamat = body.alamat
+    if (body.nama_courier)
+        transport.nama_courier = body.nama_courier
+    if (body.nomor_hp)
+        transport.nomor_hp = body.nomor_hp
+    if (body.kota)
+        transport.kota = body.kota
     transport.save()
 
     return res.send({
@@ -390,6 +502,19 @@ app.post('/transport/update', verifyToken, async (req, res) => {
     })
 })
 
+app.post('/transport/add/type', verifyToken, async (req, res) => {
+    let body = req.body
+
+    const type = await model.typeShipment.create({
+        "tipe": body.tipe,
+        "fee": body.fee,
+        "courierId": req.decode.id
+    })
+    return res.send({
+        "status": "ok"
+    })
+})
+// api untuk mendapatkan data transport
 app.post('/transport/retrieve/data', verifyToken, async (req, res) => {
 
     if (req.decode.role != 'transport') {
@@ -398,7 +523,7 @@ app.post('/transport/retrieve/data', verifyToken, async (req, res) => {
             "msg": "role is incorrect"
         })
     }
-    const transport = await model.transport.findOne({ id: req.decode.id })
+    const transport = await model.courier.findByPk(req.decode.id)
 
     return res.send({
         "status": 'ok',
@@ -406,8 +531,9 @@ app.post('/transport/retrieve/data', verifyToken, async (req, res) => {
     })
 })
 
-app.get('/transport/details',verifyToken, async (req, res) => {
-    
+// api untuk mendapatkan shipment details
+app.post('/retrieve/shipment/details', verifyToken, async (req, res) => {
+
     if (req.decode.role != 'transport') {
         res.send({
             "status": "failed",
@@ -415,7 +541,7 @@ app.get('/transport/details',verifyToken, async (req, res) => {
         })
     }
     let data = await model.shipping_details.findAll({
-        where: { id: req.body.courierId, status: { [Op.or]: ['ON DELIVERY', 'DELIVERED'] } }
+        where: { courierId: req.body.courierId }
     })
     return res.send({
         "status": 'ok',
@@ -423,27 +549,28 @@ app.get('/transport/details',verifyToken, async (req, res) => {
     })
 })
 
-app.post('/transport/update/details',verifyToken,async(req,res)=>{
-    
+// api untuk update shipment details
+app.post('/shipment/update/details', verifyToken, async (req, res) => {
+
     if (req.decode.role != 'transport') {
         res.send({
             "status": "failed",
             "msg": "role is incorrect"
         })
     }
-    
+
     let body = req.body
-    let data = await model.shipping_details.findByPk(body.id)
+    let data = await model.shipping_details.findByPk(body.shipmentId)
     data.status = body.status
     data.save()
 
     return res.send({
-        "status" : "ok"
+        "status": "ok"
     })
 })
 
-//api order
-app.post('/order/make', verifyToken, async (req, res) => {
+//api untuk membuat order
+app.post('/customer/create/order', verifyToken, async (req, res) => {
     let body = req.body
     if (req.decode.role != 'customer') {
         res.send({
@@ -453,102 +580,120 @@ app.post('/order/make', verifyToken, async (req, res) => {
     }
 
     //bikin record order
-    var order = model.order_details.create({
+    let order = await model.order.create({
         status: "UNPAID",
-        customerId: req.decode.id
+        customerId: req.decode.id,
     })
 
     //bikin order detail untuk tiap jenis product yang dibeli
     let result = body.order_details
-    for (member in result) {
-        var harga_satuan = model.product.findOne({
-            attributes: ['harga']
+    let store
+    for (let i = 0; i < result.length; ++i) {
+        var harga_satuan = await model.product.findOne({
+            attributes: ['harga'],
+            include: model.store,
+            where: { id: result[i].productId }
         },
-            {
-                where: { id: member.productid }
-            })
-        model.order_details.create({
-            jumlah: member.jumlah,
-            harga: harga_satuan * member.jumlah,
-            orderId: order.id
+        )
+        let orders_details = await model.order_details.create({
+            jumlah: result[i].jumlah,
+            harga: harga_satuan.harga * result[i].jumlah,
+            orderId: order.id,
+            productId: result[i].productId
         })
+        store = harga_satuan.store
     }
+    order.storeId = store.id
+    await order.save()
 
     //bikin shipping details
-    const ship = model.shipping_details.create({
-        alamat_sender: body.alamat_sender,
-        alamat_reciever: body.reciever,
-        fee: body.fee,
+    let customer = await model.customer.findByPk(order.customerId)
+
+    let ship = await model.shipping_details.create({
+        alamat_sender: customer.alamat,
+        alamat_receiver: store.alamat,
         orderId: order.id,
-        courierId: body.courierId
+        typeShipmentId: body.typeShipmentId
     })
-
+    let typeShipment = await model.typeShipment.findByPk(ship.typeShipmentId)
+    let fee = typeShipment.fee
     //itung total harga, update total harga di order
-    var total = model.order_details.sum('harga', { where: { orderId: order.id } });
-    total = total + ship.fee
+    var total = await model.order_details.sum('harga', { where: { orderId: order.id } });
+    total = total + fee
 
-    model.order.update(
+    await model.order.update(
         {
             total_harga: total
         },
-        { where: { id: oder.orderid } }
+        { where: { id: order.id } }
     )
+    return res.send({
+        status: 'ok'
+    })
 })
 
-app.post('/order/payment/', async (req, res) => {
+app.post('/customer/order/payment/', async (req, res) => {
     let body = req.body
-    var order = model.order.findOne(
-        { where: { id: body.orderid } }
+    var order = await model.order.findOne(
+        {
+            include: model.customer,
+            where: { id: body.orderId }
+        },
     )
 
-    var user = model.customer.findOne({
-        where: { id: order.customerId }
-    }
-    );
+    var user = order.customer
+
+    let store = await model.store.findByPk(order.storeId)
     //itung sisa saldo 
     var sisa = user.saldo - order.total_harga
     if (sisa < 0) {
         return res.send({
+            "status": "failed",
             "message": "Saldo tidak cukup!",
         })
     }
+    var total = await model.order_details.sum('harga', { where: { orderId: body.orderId } });
+
     user.saldo = sisa
     await user.save();
 
+    store.saldo = store.saldo + total
+    await store.save()
+
+    order.payment_date = Date.now()
     order.status = "PAID"
     await order.save();
-
     //update status di shipping_details jadi "IN"
-    var transport = model.shipping_details.findOne({
-        where: { oderId: order.id }
-    }
+    var transport = await model.shipping_details.findOne(
+        {
+            include: [
+                {
+                    model: model.typeShipment,
+                    include: model.courier
+                },
+            ],
+            where : { orderId: order.id }
+        }
     );
 
     transport.status = "IN"
+    console.log(transport.typeShipment)
+    transport.typeShipment.courier.saldo += transport.typeShipment.fee
+    await transport.typeShipment.courier.save()
     await transport.save();
 
-})
+    return res.send({
+        "status": 'ok'
+    })
 
-app.post('/order/ship', (req, res) => {
-    let body = req.body
-    //update status di shipping details jadi on delivery
-    model.shipping_details.update(
-        {
-            status: 'ON DELIVERY'
-        },
-        { where: { orderId: body.orderid } }
-    )
 })
 
 app.post('/order/retrieve/data', async (req, res) => {
     let body = req.body
-    const order = await model.order.findOne({ id: body.id })
-    const details = await model.order.findAll({ orderId: body.id })
-    res.send({
+    const order = await model.order.findOne({ include: model.order_details }, { where: { id: body.orderId } })
+    return res.send({
         "status": 'ok',
         "data": order,
-        "details": details
     })
 })
-
-app.listen(4000)
+app.listen(process.env.APP_PORT)
