@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="./images/Logo.png" type="image/x-icon">
+
+  <!-- Box icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+  <!-- Custom StyleSheet -->
+  <link rel="stylesheet" href="./css/styles.css" />
+  <title>Payment</title>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="navigation container">
+      <div class="logo">
+        <h1><a href="index.html"><img class="tanda" src="./images/logo.png" alt="">ruitzy</a></h1>
+      </div>
+
+      <div class="menu">
+        <div class="top-nav">
+          <div class="logo">
+            <h1>Vruitzy</h1>
+          </div>
+          <div class="close">
+            <i class="bx bx-x"></i>
+          </div>
+        </div>
+
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="product.html" class="nav-link">Products</a>
+          </li>
+          <li class="nav-item">
+            <a href="#about" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="login.html" class="nav-link">Login</a>
+          </li>
+          <li class="nav-item">
+            <a href="register.html" class="nav-link">Register</a>
+          </li>
+          <li class="nav-item">
+            <a href="cart.html" class="nav-link icon"><i class="bx bx-shopping-bag"></i></a>
+          </li>
+        </ul>
+      </div>
+
+      <a href="cart.html" class="cart-icon">
+        <i class="bx bx-shopping-bag"></i>
+      </a>
+
+      <div class="hamburger">
+        <i class="bx bx-menu"></i>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Payment Methods-->
+  <div class="profile">
+      <h1>My Cart</h1>
+      <h2>PAYMENT ID : #0000</h2>
+      <div class="data">
+          <div class="kiri">
+              <p>SELECT PAYMENT METHOD</p>
+          </div>
+          <div class="kanan">
+            <a href="cart.html" target="_blank">DELETE</a>
+        </div>
+      </div>
+  </div>
+  <form class="dataPayment">
+    <div class="data">
+        <div class="kiri">
+            <p>PAYMENT ID</p>
+            <p>TOTAL PAYMENT</p>
+            <p>PHONE NUMBER</p>
+        </div>
+        <div class="kanan">
+          <p>: #0000</p>
+          <p>: Rp. xxxx</p>
+          <p>: <input type="text" required></p>
+
+      </div>
+    </div>
+    <div class="pMethod">
+        <label ><input class="options" type="radio" id="vPay" name="paymentMethod" value="Vruitzypay" required>Vruitzypay</label><br>
+        <label ><input class="options" type="radio" id="gopay" name="paymentMethod" value="Gopay">Gopay</label><br>
+        <label ><input class="options" type="radio" id="ovo" name="paymentMethod" value="OVO">OVO</label>
+    </div>
+    <input class="checkout"type="submit" value="CHECKOUT">
+  </form>
+
+
+  <!-- Footer -->
+  <footer class="footer-distributed">
+ 
+    <div class="footer-left">
+  
+    <h3>Vruitzy</h3>
+  
+    <p class="footer-links">
+      Vruitzy is an e-commerce platform that
+      offers high-quality fresh fruits while
+      staying at home!
+    </p>
+  
+    
+    </div>
+  
+    <div class="footer-center">
+
+    </div>
+    <div class="footer-right">
+  
+    <p class="footer-company-about">
+    <span>Follow Us!</span>
+    </p>
+  
+    <div class="footer-icons">
+  
+    <a href="#"><i class="fa fa-facebook"></i></a>
+    <a href="#"><i class="fa fa-twitter"></i></a>
+    <a href="#"><i class="fa fa-linkedin"></i></a>
+    <a href="#"><i class="fa fa-github"></i></a>
+  
+    </div>
+  
+    </div>
+    <p class="footer-company-name">Vruitzy &copy; 2020</p>
+    </footer>
+    <footer>
+      <p>2020 &copy; Vruitzy | All rights reserved.</p>
+    </footer>
+  <!-- End Footer -->
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+  <!-- Custom Script -->
+  <script src="./js/index.js"></script>
+</body>
+
+</html>

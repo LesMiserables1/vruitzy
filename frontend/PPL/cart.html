@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="./images/Logo.png" type="image/x-icon">
+
+  <!-- Box icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+  <!-- Custom StyleSheet -->
+  <link rel="stylesheet" href="./css/styles.css" />
+  <title>Your Cart</title>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="navigation container">
+      <div class="logo">
+        <h1><a href="index.html"><img class="tanda" src="./images/logo.png" alt="">ruitzy</a></h1>
+      </div>
+
+      <div class="menu">
+        <div class="top-nav">
+          <div class="logo">
+            <h1>Vruitzy</h1>
+          </div>
+          <div class="close">
+            <i class="bx bx-x"></i>
+          </div>
+        </div>
+
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="product.html" class="nav-link">Products</a>
+          </li>
+          <li class="nav-item">
+            <a href="profileBuyer.html" class="nav-link">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a href="cart.html" class="nav-link">Cart</a>
+          </li>
+          <li class="nav-item">
+            <a href="awal.html" class="nav-link">Logout</a>
+          </li>
+          <li class="nav-item">
+            <a href="cart.html" class="nav-link icon"><i class="bx bx-shopping-bag"></i></a>
+          </li>
+        </ul>
+      </div>
+
+      <a href="cart.html" class="cart-icon">
+        <i class="bx bx-shopping-bag"></i>
+      </a>
+
+      <div class="hamburger">
+        <i class="bx bx-menu"></i>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Cart Items -->
+  <div class="container-md cart">
+    <table>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Apple.jpg" alt="">
+            <div>
+              <p>Apple</p>
+              <span>Price: $50.00</span>
+              <br />
+              <a href="#">remove</a>
+            </div>
+          </div>
+        </td>
+        <td><input type="number" value="1" min="1"></td>
+        <td>$50.00</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Lemons.png" alt="">
+            <div>
+              <p>Lemons</p>
+              <span>Price: $90.00</span>
+              <br />
+              <a href="#">remove</a>
+            </div>
+          </div>
+        </td>
+        <td><input type="number" value="1" min="1"></td>
+        <td>$90.00</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Cucumber.jpg" alt="">
+            <div>
+              <p>Cucumber</p>
+              <span>Price: $60.00</span>
+              <br />
+              <a href="#">remove</a>
+            </div>
+          </div>
+        </td>
+        <td><input type="number" value="1" min="1"></td>
+        <td>$60.00</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Tomatoes.jpg" alt="">
+            <div>
+              <p>Tomatoes</p>
+              <span>Price: $60.00</span>
+              <br />
+              <a href="#">remove</a>
+            </div>
+          </div>
+        </td>
+        <td><input type="number" value="1" min="1"></td>
+        <td>$60.00</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Oranges.jpg" alt="">
+            <div>
+              <p>Oranges</p>
+              <span>Price: $60.00</span>
+              <br />
+              <a href="#">remove</a>
+            </div>
+          </div>
+        </td>
+        <td><input type="number" value="1" min="1"></td>
+        <td>$60.00</td>
+      </tr>
+    </table>
+
+    <div class="total-price">
+      <table>
+        <tr>
+          <td>Subtotal</td>
+          <td>$320</td>
+        </tr>
+        <tr>
+          <td>Delivery</td>
+          <td>$50</td>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td>$370</td>
+        </tr>
+      </table>
+      <a href="payment.html" class="checkout btn">Proceed To Checkout</a>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- Footer -->
+  <footer class="footer-distributed">
+ 
+    <div class="footer-left">
+  
+    <h3>Vruitzy</h3>
+  
+    <p class="footer-links">
+      Vruitzy is an e-commerce platform that
+      offers high-quality fresh fruits while
+      staying at home!
+    </p>
+  
+    
+    </div>
+  
+    <div class="footer-center">
+
+    </div>
+    <div class="footer-right">
+  
+    <p class="footer-company-about">
+    <span>Follow Us!</span>
+    </p>
+  
+    <div class="footer-icons">
+  
+    <a href="#"><i class="fa fa-facebook"></i></a>
+    <a href="#"><i class="fa fa-twitter"></i></a>
+    <a href="#"><i class="fa fa-linkedin"></i></a>
+    <a href="#"><i class="fa fa-github"></i></a>
+  
+    </div>
+  
+    </div>
+    <p class="footer-company-name">Vruitzy &copy; 2020</p>
+    </footer>
+    <footer>
+      <p>2020 &copy; Vruitzy | All rights reserved.</p>
+    </footer>
+  <!-- End Footer -->
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+  <!-- Custom Script -->
+  <script src="./js/index.js"></script>
+</body>
+
+</html>
