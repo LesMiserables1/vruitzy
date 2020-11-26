@@ -25,83 +25,83 @@
 </div>
 </div>
 <div class="form-inner">
-    <form action="homeSiswa.html" class="buyer">
+    <form action="#" class="buyer">
         <div class="field">
-            <input type="text" placeholder="Enter your email" required>
+            <input type="text" placeholder="Enter your email" class="buyer-email" required>
         </div>
         <div class="field">
-          <input type="text" placeholder="Enter your username" required>
+          <input type="text" placeholder="Enter your username" class="buyer-username" required>
         </div>
         <div class="field">
-          <input type="text" placeholder="Enter your name" required>
+          <input type="text" placeholder="Enter your name" class="buyer-name" required>
         </div>
         <div class="field">
-          <input type="text" placeholder="Enter your address" required>
+          <input type="text" placeholder="Enter your address" class="buyer-address" required>
         </div>
         <div class="field">
-            <input type="password" placeholder="Enter your password" required>
+            <input type="password" placeholder="Enter your password" class="buyer-password" required>
         </div>
         <div class="field">
-          <input type="password" placeholder="Confirm password" required>
+          <input type="password" placeholder="Confirm password" class="buyer-confpassword" required>
         </div>
         <div class="field btn">
           <div class="btn-layer">
       </div>
-      <input type="submit" value="Signup">
+      <input type="submit" value="Signup" class='signup-customer'>
       </div>
 <div class="signup-link">
 Already a member? <a href="login.html">Login here</a></div>
 </form>
-<form action="homeTutor.html" class="seller">
+<form action="#" class="seller">
   <div class="field">
-    <input type="text" placeholder="Enter your email" required>
+    <input type="text" placeholder="Enter your email" class="seller-email" required>
 </div>
 <div class="field">
-  <input type="text" placeholder="Enter your username" required>
+  <input type="text" placeholder="Enter your username" class="seller-username" required>
 </div>
 <div class="field">
-  <input type="text" placeholder="Enter your store name" required>
+  <input type="text" placeholder="Enter your store name" class="seller-storename" required>
 </div>
 <div class="field">
-  <input type="text" placeholder="Enter your address" required>
+  <input type="text" placeholder="Enter your address" class="seller-address" required>
 </div>
 <div class="field">
-    <input type="password" placeholder="Enter your password" required>
+    <input type="password" placeholder="Enter your password" class="seller-password" required>
 </div>
 <div class="field">
-  <input type="password" placeholder="Confirm password" required>
+  <input type="password" placeholder="Confirm password" class="seller-confpassword" required>
 </div>
 <div class="field btn">
   <div class="btn-layer">
 </div>
-<input type="submit" value="Signup">
+<input type="submit" value="Signup" class="signup-seller">
 </div>
 <div class="signup-link">
 Already a member? <a href="login.html">Login here</a></div>
 </form>
-<form action="homeAdmin.html" class="driver">
+<form action="#" class="driver">
   <div class="field">
-    <input type="text" placeholder="Enter your email" required>
+    <input type="text" placeholder="Enter your email" class="driver-email" required>
 </div>
 <div class="field">
-<input type="text" placeholder="Enter your username" required>
+<input type="text" placeholder="Enter your username" class="driver-username" required>
 </div>
 <div class="field">
-  <input type="text" placeholder="Enter your vehicle" required>
+  <input type="text" placeholder="Enter your courier name" class="driver-name" required>
 </div>
 <div class="field">
-  <input type="text" placeholder="Enter your address" required>
+  <input type="text" placeholder="Enter your address" class="driver-address" required>
 </div>
 <div class="field">
-    <input type="password" placeholder="Enter your password" required>
+    <input type="password" placeholder="Enter your password" class="driver-password" required>
 </div>
 <div class="field">
-  <input type="password" placeholder="Confirm password" required>
+  <input type="password" placeholder="Confirm password" class="driver-confpassword" required>
 </div>
 <div class="field btn">
   <div class="btn-layer">
 </div>
-<input type="submit" value="Signup">
+<input type="submit" value="Signup" class="signup-driver">
 </div>
 <div class="signup-link">
 Already a member? <a href="login.html">Login here</a></div>
@@ -129,10 +129,126 @@ Already a member? <a href="login.html">Login here</a></div>
         loginForm.style.marginLeft = "0%";
     
       });
-      signupLink.onclick = (()=>{
-        signupBtn.click();
-        return false;
+
+      // signupLink.onclick = (()=>{
+      //   signupBtn.click();
+      //   return false;
+      // });
+
+      const signUpbtn = document.querySelector(".signup-customer")
+      signUpbtn.onclick = ((e)=>{
+        e.preventDefault()
+        let email = document.querySelector('.buyer-email').value;
+        let username = document.querySelector('.buyer-username').value;
+        let name = document.querySelector('.buyer-name').value;
+        let address = document.querySelector('.buyer-address').value;
+        let password = document.querySelector('.buyer-password').value;
+        let confpassword = document.querySelector('.buyer-confpassword').value;
+        // tidak membuat confirm password
+
+        let data = {
+          "nama" : name,
+          "username" : username,
+          "email" : email,
+          "password" : password,
+          "alamat" : address,
+        }
+        if (password === confpassword){
+        fetch('http://dev-story.my.id:3011/customer/register',{
+          method : 'post',
+          headers: {
+            'Content-Type' : 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(async res => {
+          let response = await res.json();
+          console.log(response)
+          if (response.status === 'ok'){
+            window.location.href = 'http://dev-story.my.id:3011/thankSignUp.html'
+          }
+        })}else{
+          alert("Password do not match!");
+        }
       });
+
+      const signUpSellbtn = document.querySelector(".signup-seller")
+      signUpSellbtn.onclick = ((e)=>{
+        e.preventDefault()
+        let email = document.querySelector('.seller-email').value;
+        let username = document.querySelector('.seller-username').value;
+        let store_name = document.querySelector('.seller-storename').value;
+        let address = document.querySelector('.seller-address').value;
+        let password = document.querySelector('.seller-password').value;
+        let confpassword = document.querySelector('.seller-confpassword').value;
+        // tidak membuat confirm password
+
+        let data = {
+          "username" : username,
+          "email" : email,
+          "nama_toko" : store_name,
+          "password" : password,
+          "alamat" : address
+        }
+        
+        if (password == confpassword) {
+        fetch('http://dev-story.my.id:3011/store/register',{
+          method : 'post',
+          headers: {
+            'Content-Type' : 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(async res => {
+          let response = await res.json();
+          console.log(response)
+          if (response.status === 'ok'){
+            window.location.href = 'http://dev-story.my.id:3011/thankSignUp.html'
+          }
+        })}else{
+          alert("Password do not match!");
+        }
+      });
+
+      const signUpDriverbtn = document.querySelector(".signup-driver")
+      signUpDriverbtn.onclick = ((e)=>{
+        e.preventDefault()
+        let email = document.querySelector('.driver-email').value;
+        let username = document.querySelector('.driver-username').value;
+        let name = document.querySelector('.driver-name').value;
+        let address = document.querySelector('.driver-address').value;
+        let password = document.querySelector('.driver-password').value;
+        let confpassword = document.querySelector('.driver-confpassword').value;
+        // tidak membuat confirm password
+
+        let data = {
+          "username" : username,
+          "email" : email,
+          "nama_courier" : name,
+          "password" : password,
+          "alamat" : address
+        }
+
+        if (password == confpassword){
+        fetch('http://dev-story.my.id:3011/transport/register',{
+          method : 'post',
+          headers: {
+            'Content-Type' : 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(async res => {
+          let response = await res.json();
+          console.log(response)
+          if (response.status === 'ok'){
+            window.location.href = 'http://dev-story.my.id:3011/thankSignUp.html'
+          }
+        })}else{
+          alert("Password do not match!");
+        }
+      });
+
+
     </script>
 
   </body>
