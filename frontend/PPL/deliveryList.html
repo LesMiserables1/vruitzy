@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="./images/Logo.png" type="image/x-icon">
+
+  <!-- Box icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+  <!-- Custom StyleSheet -->
+  <link rel="stylesheet" href="./css/styles.css" />
+  <title>Delivery List</title>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="navigation container">
+      <div class="logo">
+        <h1><a href="index.html"><img class="tanda" src="./images/logo.png" alt="">ruitzy</a></h1>
+      </div>
+
+      <div class="menu">
+        <div class="top-nav">
+          <div class="logo">
+            <h1>Vruitzy</h1>
+          </div>
+          <div class="close">
+            <i class="bx bx-x"></i>
+          </div>
+        </div>
+
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="profileDriver.html" class="nav-link">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">Delivery List</a>
+          </li>
+          <li class="nav-item">
+            <a href="awal.html" class="nav-link">Logout</a>
+          </li>
+        </ul>
+      </div>
+
+      <a href="cart.html" class="cart-icon">
+        <i class="bx bx-shopping-bag"></i>
+      </a>
+
+      <div class="hamburger">
+        <i class="bx bx-menu"></i>
+      </div>
+    </div>
+  </nav>
+  <div style="display: flex; margin-left: 38%;">
+      <a href="#in" ><button style="font-weight: 700; width: 100px; height: 50px; padding: 5px; margin: 10px; color: #ffffff; background-color: #1fce08; border: 2px solid #1fce08;">IN</button></a>
+      <a href="#on"><button style="font-weight: 700; width: 100px; height: 50px; padding: 5px; margin: 10px; color: #ffffff; background-color: #1fce08; border: 2px solid #1fce08;">ON DELIVERY</button></a>
+      <a href="#sampai"><button style="font-weight: 700; width: 100px; height: 50px; padding: 5px; margin: 10px; color: #ffffff; background-color: #1fce08; border: 2px solid #1fce08;">DELIVERED</button></a>
+  </div>
+  <!-- Cart Items -->
+  <div class="container-md cart" style="border-bottom: 3px solid #1fce08; padding-bottom: 3%;" id="in" style="margin-top: 1%;">
+    <h1 style="margin-bottom: 1%; color:#1b8a0d; font-size: 5rem;">STATUS : IN</h1>
+    <table>
+      <tr>
+        <th>Product</th>
+        <th>Address</th>
+        <th>Payment</th>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Apple.jpg" alt="">
+            <div>
+              <p>Apple</p>
+              <span>Price: $50.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Lemons.png" alt="">
+            <div>
+              <p>Lemons</p>
+              <span>Price: $90.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Cucumber.jpg" alt="">
+            <div>
+              <p>Cucumber</p>
+              <span>Price: $60.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Tomatoes.jpg" alt="">
+            <div>
+              <p>Tomatoes</p>
+              <span>Price: $60.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Oranges.jpg" alt="">
+            <div>
+              <p>Oranges</p>
+              <span>Price: $60.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="container-md cart" style="border-bottom: 3px solid #1fce08; padding-bottom: 3%;" id="on">
+    <h1 style="margin-bottom: 1%; color:#1b8a0d; font-size: 5rem;">STATUS : ON DELIVERY</h1>
+    <table>
+      <tr>
+        <th>Product</th>
+        <th>Address</th>
+        <th>Payment</th>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Apple.jpg" alt="">
+            <div>
+              <p>Apple</p>
+              <span>Price: $50.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Lemons.png" alt="">
+            <div>
+              <p>Lemons</p>
+              <span>Price: $90.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Cucumber.jpg" alt="">
+            <div>
+              <p>Cucumber</p>
+              <span>Price: $60.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Tomatoes.jpg" alt="">
+            <div>
+              <p>Tomatoes</p>
+              <span>Price: $60.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Oranges.jpg" alt="">
+            <div>
+              <p>Oranges</p>
+              <span>Price: $60.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="container-md cart" style="border-bottom: 3px solid #1fce08; padding-bottom: 3%;" id="sampai">
+    <h1 style="margin-bottom: 1%; color:#1b8a0d; font-size: 5rem;">STATUS : DELIVERED</h1>
+    <table>
+      <tr>
+        <th>Product</th>
+        <th>Address</th>
+        <th>Payment</th>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Apple.jpg" alt="">
+            <div>
+              <p>Apple</p>
+              <span>Price: $50.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Lemons.png" alt="">
+            <div>
+              <p>Lemons</p>
+              <span>Price: $90.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Cucumber.jpg" alt="">
+            <div>
+              <p>Cucumber</p>
+              <span>Price: $60.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Tomatoes.jpg" alt="">
+            <div>
+              <p>Tomatoes</p>
+              <span>Price: $60.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Oranges.jpg" alt="">
+            <div>
+              <p>Oranges</p>
+              <span>Price: $60.00</span>
+              <br />
+              <span>Amount: 2kg</span><br />
+              <span>Delivery ID: #000</span>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>From: Alamat Seller</p>
+            <span>To: Alamat Buyer</span>
+        </td>
+        <td>
+            <p>Harga Delivery</p>
+            <span>Payment Method</span>
+            <br />
+            <span>Tanggal</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+
+  <!-- Footer -->
+  <footer class="footer-distributed">
+ 
+    <div class="footer-left">
+  
+    <h3>Vruitzy</h3>
+  
+    <p class="footer-links">
+      Vruitzy is an e-commerce platform that
+      offers high-quality fresh fruits while
+      staying at home!
+    </p>
+  
+    
+    </div>
+  
+    <div class="footer-center">
+
+    </div>
+    <div class="footer-right">
+  
+    <p class="footer-company-about">
+    <span>Follow Us!</span>
+    </p>
+  
+    <div class="footer-icons">
+  
+    <a href="#"><i class="fa fa-facebook"></i></a>
+    <a href="#"><i class="fa fa-twitter"></i></a>
+    <a href="#"><i class="fa fa-linkedin"></i></a>
+    <a href="#"><i class="fa fa-github"></i></a>
+  
+    </div>
+  
+    </div>
+    <p class="footer-company-name">Vruitzy &copy; 2020</p>
+    </footer>
+    <footer>
+      <p>2020 &copy; Vruitzy | All rights reserved.</p>
+    </footer>
+  <!-- End Footer -->
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+  <!-- Custom Script -->
+  <script src="./js/index.js"></script>
+</body>
+
+</html>
