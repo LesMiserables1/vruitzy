@@ -662,6 +662,7 @@ app.post('/customer/create/order', verifyToken, async (req, res) => {
     )
     return res.send({
         status: 'ok'
+        "orderId" : order.id
     })
 })
 
