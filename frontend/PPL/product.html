@@ -254,10 +254,13 @@
     <script src="./js/index.js"></script>
 
     <script>
+
          function saveProduct(productId) {
-          console.log(productId)
+         
           localStorage.setItem('productId', productId);
-          window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/product-details.html';
+          
+        
+         window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/product-details.html';
           //window.location.href = 'http://dev-story.my.id:3011/product-details.html';
         }
 
@@ -273,7 +276,8 @@
         let data = {
             "query" : buah
         }
-
+        let hasil = document.querySelector('.product-center')
+        hasil.innerHTML = ''
         
         fetch('http://dev-story.my.id:3011/customer/search/product', {
           method: 'post',
@@ -287,16 +291,15 @@
             let response = await res.json();
             console.log(response)
             if(response.status == 'ok'){
-                let hasil = document.querySelector('.product-center')
-                hasil.innerHTML = ''
+                
               response.data.forEach(product => {
-              
+           
               hasil.innerHTML += 
                     `<div class="product">
                 <div class="product-header">
                     <img src="./images/Apple.jpg" alt="">
                     <ul class="icons">
-                        <a onclick="saveProduct('${product.productId}');"> <span><i class="bx bx-shopping-bag"></i></span>
+                        <a onclick="saveProduct('${product.id}');"> <span><i class="bx bx-shopping-bag"></i></span>
                         </a>
                     </ul>
                 </div>
