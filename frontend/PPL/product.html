@@ -70,16 +70,10 @@
     <section class="section all-products" id="products">
         <div class="top container">
             <h1>All Products</h1>
-            <form>
-                <select>
-                    <option value="1">Defualt Sorting</option>
-                    <option value="2">Sort By Price</option>
-                    <option value="3">Sort By Popularity</option>
-                    <option value="4">Sort By Sale</option>
-                    <option value="5">Sort By Rating</option>
-                </select>
-                <span><i class='bx bx-chevron-down'></i></span>
-            </form>
+            <form style="width: 350px;">
+                <input style="font-size: 2rem; width: 300px; height: 40px; border: 2px solid green; padding-left: 1%; " type="text" class="buah-name" placeholder="Search.." name="search">
+                <button style="font-size: 2rem; width: 40px; height: 40px; border: 2px solid green; color: green;" type="submit"><i class="fa fa-search"></i></button>
+              </form>
         </div>
 
         <div class="product-center container">
@@ -200,7 +194,7 @@
         </div>
     </section>
 
-    <section class="pagination">
+    <section class="pagination" style="text-align: center;">
         <div class=" container">
             <span>1</span>
             <span>2</span>
@@ -258,6 +252,112 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
     <!-- Custom Script -->
     <script src="./js/index.js"></script>
+
+    <script>
+         function saveProduct(productId) {
+          console.log(productId)
+          localStorage.setItem('productId', productId);
+          window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/product-details.html';
+          //window.location.href = 'http://dev-story.my.id:3011/product-details.html';
+        }
+
+        
+    const search = document.querySelector(".fa-search");
+
+      search.onclick = ((e)=>{
+        
+        e.preventDefault()
+        
+        let buah = document.querySelector('.buah-name').value;
+        console.log(buah)
+        let data = {
+            "query" : buah
+        }
+
+        
+        fetch('http://dev-story.my.id:3011/customer/search/product', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': localStorage.getItem('token')
+          },
+          body: JSON.stringify(data)
+        })
+          .then(async res => {
+            let response = await res.json();
+            console.log(response)
+            if(response.status == 'ok'){
+                let hasil = document.querySelector('.product-center')
+                hasil.innerHTML = ''
+              response.data.forEach(product => {
+              
+              hasil.innerHTML += 
+                    `<div class="product">
+                <div class="product-header">
+                    <img src="./images/Apple.jpg" alt="">
+                    <ul class="icons">
+                        <a onclick="saveProduct('${product.productId}');"> <span><i class="bx bx-shopping-bag"></i></span>
+                        </a>
+                    </ul>
+                </div>
+                <div class="product-footer">
+                    
+                         <h3>${product.nama_product}</h3>
+                    
+                    <h4 class="price">${product.store.nama_toko}</h4>
+                    <h4 class="price">${product.harga}/kg</h4>
+                </div>
+               </div>`
+            })
+            //window.location.href = 'http://dev-story.my.id:3011/product.html'
+            //window.location.href =' file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/product.html'
+            }
+          })
+
+          })
+          fetch('http://dev-story.my.id:3011/customer/get/products', {
+            
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token': localStorage.getItem('token')
+            },
+            
+            })
+            .then(async res => {
+                let response = await res.json();
+                console.log(response)
+                if(response.status == 'ok'){
+                let hasil = document.querySelector('.product-center')
+                response.data.forEach(product => {
+                    hasil.innerHTML += 
+                    `<div class="product">
+                    <div class="product-header">
+                        <img src="./images/Apple.jpg" alt="">
+                        <ul class="icons">
+                            <a onclick="saveProduct('${product.id}');"> <span><i class="bx bx-shopping-bag"></i></span>
+                            </a>
+                        </ul>
+                    </div>
+                    <div class="product-footer">
+                        
+                            <h3>${product.nama_product}</h3>
+                        
+                        <h4 class="price">${product.store.nama_toko}</h4>
+                        <h4 class="price">${product.harga}/kg</h4>
+                    </div>
+                    </div>`
+
+                
+                })
+                
+                }
+            })
+
+ 
+  
+      </script>
+      
 </body>
 
 </html>

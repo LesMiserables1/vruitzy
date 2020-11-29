@@ -171,10 +171,61 @@
         </td>
       </tr>
     </table>
-
+    <!-- My order history-->
+  <div class="orderHistory">
+      <h1>Store Order List</h1>
+    <div class="disini">
+      <div class="line"></div>
+      <div class="pid">
+          <h2>Order ID : #0001</h2>
+          <p>Tanggal</p>
+      </div>
+      <div class="pengiriman">
+          <div class="satu">
+              <p>PRODUCTS</p>
+          </div>
+          <div class="dua">
+              <p>AMOUNT</p>
+          </div>
+          <div class="tiga">
+              <!-- <p>PRICE</p> -->
+              
+          </div>
+          <div class="empat">
+          <!-- <p>BUYER ADDRESS</p> -->
+      </div>
+      </div>
+      <div class="kirim">
+          <div class="pengiriman">
+              <div class="satu">
+                  <p>barang1</p>
+                  <p>barang2</p>
+                  <p>barang3</p>
+              </div>
+              <div class="dua">
+                  <p>jumlah barang1</p>
+                  <p>jumlah barang2</p>
+                  <p>jumlah barang3</p>
+                  
+              </div>
+              <div class="tiga">
+                  <!-- <p>Alamat Toko</p> -->
+                  
+              </div>
+              <div class="empat1">
+              <!-- <p>Alamat Buyer</p> -->
+          </div>
+          </div>
+          <div class="hargaDelivery">Delivery fee : Rpxxxx</div>
+          <div class="hargaDelivery">Total Price : Rpxxxx</div>
+          <div class="hargaDelivery">Payment Status : PAID</div>
+          <div class="hargaDelivery">PAID at : tanggal</div>
+      </div>
     
 
   </div>
+</div>
+</div>
 
 
 
@@ -224,6 +275,83 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
   <!-- Custom Script -->
   <script src="./js/index.js"></script>
+  <script>
+  
+  fetch('http://dev-story.my.id:3011/store/retrieve/order', {
+
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': localStorage.getItem('token')
+      },
+    
+      })
+      .then(async res => {
+        let response = await res.json();
+        console.log(response)
+        let hasil = document.querySelector('.disini')
+        if(response.status == 'ok'){
+          response.data.forEach(order => {
+            hasil.innerHTML += 
+            `<div class="line"></div>
+                <div class="pid">
+                    <h2>Order ID : #${order.id}</h2>
+                    <p>${order.createdAt}</p>
+                </div>
+                <div class="pengiriman">
+                    <div class="satu">
+                        <p>PRODUCTS</p>
+                    </div>
+                    <div class="dua">
+                        <p>AMOUNT</p>
+                    </div>
+                    <div class="tiga">
+                        <!-- <p>PRICE</p> -->
+                        
+                    </div>
+                    <div class="empat">
+                    <!-- <p>BUYER ADDRESS</p> -->
+                </div>
+                </div>
+                <div class="kirim">
+                    <div class="pengiriman">
+                        <div class="satu">
+                            <p>barang1</p>
+                            <p>barang2</p>
+                            <p>barang3</p>
+                        </div>
+                        <div class="dua">
+                            <p>jumlah barang1</p>
+                            <p>jumlah barang2</p>
+                            <p>jumlah barang3</p>
+                            
+                        </div>
+                        <div class="tiga">
+                            <!-- <p>Alamat Toko</p> -->                           
+                        </div>
+                        <div class="empat1">
+                        <!-- <p>Alamat Buyer</p> -->
+                    </div>
+                    </div>
+                    <div class="hargaDelivery">Delivery fee : Rp${order.shopping_details.fee}</div>
+                    <div class="hargaDelivery">Total Price : Rp${order.total_harga}</div>
+                    <div class="hargaDelivery">PAID at : ${order.payment_date}</div>
+                    <div class="hargaDelivery">Delivery Status : PAID</div>
+                </div> `
+
+                let titikbarang = document.querySelector('.satu')
+                let titikjumlah = document.querySelector('.dua')
+
+                order.order_details.forEach(details =>{
+                  titikbarang.innerHTML += `<p>${details.product.nama_product}</p>`
+                  titikjumlah.innerHTML += `<p>${details.jumlah}</p>`
+                })         
+
+          })
+        }
+      })
+
+  </script>
 </body>
 
 </html>

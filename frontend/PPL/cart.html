@@ -67,14 +67,17 @@
   </nav>
 
   <!-- Cart Items -->
+  
   <div class="container-md cart">
-    <table>
+    <div class="namastore"><h1>Store: </h1></div>
+    
+    <table class="cartItems">
       <tr>
         <th>Product</th>
         <th>Quantity</th>
         <th>Subtotal</th>
       </tr>
-      <tr>
+      <!-- <tr>
         <td>
           <div class="cart-info">
             <img src="./images/Apple.jpg" alt="">
@@ -147,8 +150,8 @@
           </div>
         </td>
         <td><input type="number" value="1" min="1"></td>
-        <td>$60.00</td>
-      </tr>
+        <td>$60.00</td> 
+      </tr>-->
     </table>
 
     <div class="total-price">
@@ -220,6 +223,134 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
   <!-- Custom Script -->
   <script src="./js/index.js"></script>
+
+  
+  <script>
+      let hasil = document.querySelector('.cartItems')
+      let namastore = document.querySelector('.namastore')
+       
+      var cart = JSON.parse(localStorage.getItem("cart"));
+      var i;
+      if (cart !== null) {
+      let total_harga = 0
+
+      let details = []
+
+      for (i = 0; i < cart.length; i++) {
+            let productId = cart[i][0];
+            let jumlah = cart[i][1];
+
+            let buat_details = {
+                  "productId" : productId,
+                  "jumlah" : jumlah
+            }
+            details.push(buat_details)
+
+            let data = {
+                "productId" : productId
+            }
+
+            fetch('http://dev-story.my.id:3011/customer/retrieve/product', {
+              method: 'post',
+              headers: {
+                'Content-Type': 'application/json',
+                'auth-token': localStorage.getItem('token')
+              },
+              body: JSON.stringify(data)
+            })
+              .then(async res => {
+                let response = await res.json();
+                console.log(response)
+                if(response.status == 'ok'){
+                  let hargapro = jumlah*response.data.harga
+                  total_harga += hargapro
+                  console.log(hargapro)
+                  console.log(total_harga)
+                  namastore.innterHTML = `<h1>Store: ${response.data.store.nama_toko} </h1>`
+                   hasil.innerHTML += 
+                    `<tr>
+                    <td>
+                      <div class="cart-info">
+                        <img src="./images/Apple.jpg" alt="">
+                        <div>
+                          <p>${response.data.nama_product}</p>
+                          <span>Price: ${response.data.harga}</span>
+                          <br />
+                          <a href="#">remove</a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>${jumlah}</td>
+                    <td>${hargapro}</td>
+                  </tr>`
+                }
+              })
+      }
+
+      console.log(total_harga)
+      let delivfee = 15000
+      let totalfix = total_harga+delivfee
+      localStorage.setItem('totalharga', totalfix)
+      let total = document.querySelector('.total-price')
+      total.innerHTML = `<table>
+        <tr>
+          <td>Subtotal</td>
+          <td>Rp${total_harga}</td>
+        </tr>
+        <tr>
+          <td>Delivery fee</td>
+          <td>Rp15000</td>
+        </tr>
+        <tr>
+          <td>Total Price</td>
+          <td>Rp${totalfix}</td>
+        </tr>
+      </table>
+      <a href="payment.html" class="checkout btn">Proceed To Checkout</a>`
+
+      
+      const checkoutBtn = document.querySelector('.checkout')
+      checkoutBtn.onclick = ((e)=>{
+        e.preventDefault()
+        
+        let new_order = {
+          "order_details" : details,
+          "typeShipmentId" : 1
+        }
+
+        fetch('http://dev-story.my.id:3011/customer/create/order', {
+
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': localStorage.getItem('token')
+          },
+          body: JSON.stringify(new_order)
+        })
+          .then(async res => {
+            let response = await res.json();
+            console.log(response)
+            localStorage.setItem('orderId', 15)
+            // localStorage.setItem('orderId', response.orderId)
+            window.location.href = "file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/payment.html"
+            //window.location.href = 'http://dev-story.my.id:3011/payment.html';
+          })
+
+
+      });
+
+
+      
+      
+      }
+
+
+        
+      
+      
+   </script>
+
+
 </body>
 
 </html>

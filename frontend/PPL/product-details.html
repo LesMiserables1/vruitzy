@@ -50,7 +50,7 @@
             <a href="cart.html" class="nav-link">Cart</a>
           </li>
           <li class="nav-item">
-            <a href="index.html" class="nav-link">Logout</a>
+            <a href="awal.html" class="nav-link">Logout</a>
           </li>
           <li class="nav-item">
             <a href="cart.html" class="nav-link icon"><i class="bx bx-shopping-bag"></i></a>
@@ -82,11 +82,11 @@
         <h1>Apple</h1>
         <div class="price">$50</div>
         
-
+<!-- 
         <form class="form">
           <input type="number" placeholder="1">
           <a href="cart.html" class="addCart">Add To Cart</a>
-        </form>
+        </form> -->
         
       </div>
     </div>
@@ -204,6 +204,62 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
   <!-- Custom Script -->
   <script src="./js/index.js"></script>
+
+  <script>
+
+    var productId = localStorage.getItem('productId');
+        console.log(productId)
+        let data = {
+            "productId" : productId
+        }     
+        fetch('http://dev-story.my.id:3011/customer/retrieve/product', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': localStorage.getItem('token')
+          },
+          body: JSON.stringify(data)
+        })
+          .then(async res => {
+            let response = await res.json();
+            console.log(response)
+            if(response.status == 'ok'){
+              let hasil = document.querySelector('.right')
+              hasil.innerHTML = 
+                    `<span>${response.data.store.nama_toko}</span>
+                      <h1>${response.data.nama_product}</h1>
+                      <div class="price">Price: ${response.data.harga}/kg</div>
+                      <div class="price">Stock: ${response.data.stok}</div>
+                      <form class="form">
+                        <input type="number" class="jumlah" placeholder="1">
+                        <a href ="cart.html" class="addCart"><i>Add To Cart</i></a>
+                      </form>`
+                      const addCart = document.querySelector(".addCart");
+
+                      addCart.onclick = ((e)=>{
+
+                        e.preventDefault()
+                        let jumlah = document.querySelector('.jumlah').value;
+                        //simpen productId sama jumlah pesan
+                        let addproduct = [productId, jumlah]
+                        var cart = JSON.parse(localStorage.getItem("cart"))
+                        cart.push(addproduct)
+                        localStorage.setItem("cart", JSON.stringify(cart));
+                        
+                        console.log(cart)
+                        window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/cart.html';
+
+                        //window.location.href = 'http://dev-story.my.id:3011/cart.html';
+
+                      })
+            }
+          })
+
+          
+
+       
+      
+    </script>
 </body>
 
 </html>

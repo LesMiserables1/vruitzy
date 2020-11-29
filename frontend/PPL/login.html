@@ -27,51 +27,51 @@
 <div class="form-inner">
     <form action="index.html" class="buyer">
         <div class="field">
-            <input type="text" placeholder="Enter your email" required>
+            <input type="text" class="email-cust" placeholder="Enter your email" required>
         </div>
         <div class="field">
-            <input type="password" placeholder="Enter your password" required>
+            <input type="password" class="pass-cust" placeholder="Enter your password" required>
         </div>
         <div class="pass-link">
             <a href="forget.html">Forgot password?</a></div>
             <div class="field btn">
             <div class="btn-layer">
         </div>
-        <input href="index.html" type="submit" value="Login">
+        <input class="login-cust" type="submit" value="Login">
         </div>
 <div class="signup-link">
 New to Vruitzy? <a href="signup.html">Signup now</a></div>
 </form>
 <form action="profileSeller.html" class="seller">
   <div class="field">
-    <input type="text" placeholder="Enter your email" required>
+    <input type="text" class="email-seller" placeholder="Enter your email" required>
 </div>
 <div class="field">
-    <input type="password" placeholder="Enter your password" required>
+    <input type="password"  class="pass-seller" placeholder="Enter your password" required>
 </div>
 <div class="pass-link">
     <a href="forget.html">Forgot password?</a></div>
     <div class="field btn">
     <div class="btn-layer">
 </div>
-<input type="submit" value="Login">
+<input type="submit"  value="Login" class="login-seller">
 </div>
 <div class="signup-link">
 New to Vruitzy? <a href="signup.html">Signup now</a></div>
 </form>
 <form action="profileDriver.html" class="driver">
   <div class="field">
-    <input type="text" placeholder="Enter your email" required>
+    <input type="text" class="email-transport" placeholder="Enter your email" required>
 </div>
 <div class="field">
-    <input type="password" placeholder="Enter your password" required>
+    <input type="password" class="pass-transport" placeholder="Enter your password" required>
 </div>
 <div class="pass-link">
     <a href="forget.html">Forgot password?</a></div>
     <div class="field btn">
     <div class="btn-layer">
 </div>
-<input type="submit" value="Login">
+<input type="submit" value="Login" class="login-transport">
 </div>
 <div class="signup-link">
 New to Vruitzy? <a href="signup.html">Signup now</a></div>
@@ -99,6 +99,112 @@ New to Vruitzy? <a href="signup.html">Signup now</a></div>
         loginForm.style.marginLeft = "0%";
     
       });
+
+      const custLGbtn = document.querySelector(".login-cust");
+
+    custLGbtn.onclick = ((e)=>{
+      e.preventDefault()
+      
+      let email = document.querySelector('.email-cust').value;
+      let password = document.querySelector('.pass-cust').value;
+
+
+      let data = {
+          "email" : email,
+          "password" : password
+      }
+
+      fetch('http://dev-story.my.id:3011/customer/login', {
+
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(async res => {
+          let response = await res.json();
+          console.log(response)
+          if(response.status == 'ok'){
+            localStorage.setItem('token', response.token)
+            //window.location.href = 'http://dev-story.my.id:3011/index.html'
+            window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/index.html'
+          }
+        })
+        
+
+    });
+
+     const sellerLGbtn = document.querySelector(".login-seller");
+
+      sellerLGbtn.onclick = ((e)=>{
+        e.preventDefault()
+        
+        let email = document.querySelector('.email-seller').value;
+        let password = document.querySelector('.pass-seller').value;
+
+
+        let data = {
+            "email" : email,
+            "password" : password
+        }
+
+        fetch('http://dev-story.my.id:3011/store/login', {
+
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+          .then(async res => {
+            let response = await res.json();
+            console.log(response)
+            if(response.status == 'ok'){
+              localStorage.setItem('token', response.token)
+              //window.location.href = 'http://dev-story.my.id:3011/profileSeller.html'
+              window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/profileSeller.html'
+            }
+          })
+          
+
+      });
+
+      const transLGbtn = document.querySelector(".login-transport");
+
+      transLGbtn.onclick = ((e)=>{
+        e.preventDefault()
+        
+        let email = document.querySelector('.email-transport').value;
+        let password = document.querySelector('.pass-transport').value;
+
+
+        let data = {
+            "email" : email,
+            "password" : password
+        }
+
+        fetch('http://dev-story.my.id:3011/transport/login', {
+
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+          .then(async res => {
+            let response = await res.json();
+            console.log(response)
+            if(response.status == 'ok'){
+              localStorage.setItem('token', response.token)
+              //window.location.href = 'http://dev-story.my.id:3011/profileDriver.html'
+              window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/profileDriver.html'
+            }
+          })
+          
+
+      });
+
       signupLink.onclick = (()=>{
         signupBtn.click();
         return false;

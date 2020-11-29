@@ -76,9 +76,9 @@
         </div>
         <div class="tiga">
             <form id="editData">
-                <p>: <input type="text" id="pName" name="pName" value="Enter product name"><br><br></p>
-                <p>: <input type="number" id="harga" name="harga" value="0"><br><br></p>
-                <p>: <input type="number" id="stok" name="stok" value="0"><br><br></p>
+                <p>: <input type="text" class="pName" name="pName" value="Enter product name"><br><br></p>
+                <p>: <input type="number" class="harga" name="harga" value="0"><br><br></p>
+                <p>: <input type="number" class="stok" name="stok" value="0"><br><br></p>
             </form>
         </div>
         
@@ -137,6 +137,42 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
   <!-- Custom Script -->
   <script src="./js/index.js"></script>
+
+  <script>
+      const save = document.querySelector(".simpan1");
+
+    save.onclick = ((e)=>{
+        e.preventDefault()
+        
+        let name = document.querySelector('.pName').value;
+        let price = document.querySelector('.harga').value;
+        let stock = document.querySelector('.stok').value;
+       
+
+        let data = {
+            "nama_product" : name,   
+            "stok" : stock,
+            "harga" : price
+        }
+
+         fetch('http://dev-story.my.id:3011/store/create/product',{
+          method : 'post',
+          headers: {
+            'Content-Type' : 'application/json',
+            'auth-token': localStorage.getItem('token')
+          },
+          body: JSON.stringify(data)
+        })
+        .then(async res => {
+          let response = await res.json();
+          console.log(response)
+          if (response.status === 'ok'){
+            window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/profileSeller.html'
+           // window.location.href = 'http://dev-story.my.id:3011/profileSeller.html'
+          }
+        })
+    })
+  </script>
 </body>
 
 </html>

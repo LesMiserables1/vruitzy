@@ -75,17 +75,17 @@
         </div>
         <div class="tiga">
             <form id="editData">
-                <p>: <input type="text" id="pName" name="pName" value="nama produk awal"><br><br></p>
-                <p>: <input type="number" id="harga" name="harga" value="0"><br><br></p>
-                <p>: <input type="number" id="stok" name="stok" value="0"><br><br></p>
+                <p>: <input type="text" class="pName" name="pName" value="nama produk awal"><br><br></p>
+                <p>: <input type="number" class="harga" name="harga" value="0"><br><br></p>
+                <p>: <input type="number" class="stok" name="stok" value="0"><br><br></p>
             </form>
             <p>: terjual</p>
         </div>
         
     </div>
     <div class="tombol">
-      <a href="profileSeller.html"><input class="hapus" type="submit" value="DELETE" form="editData"></a> 
-        <a href="profileSeller.html"> <input class="simpan" type="submit" value="SAVE"></a> 
+      <a ><input class="hapus" type="submit" value="DELETE" form="editData"></a> 
+        <a > <input class="simpan" type="submit" value="SAVE"></a> 
     </div>
 </div>
 
@@ -137,6 +137,42 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
   <!-- Custom Script -->
   <script src="./js/index.js"></script>
+  <script>
+    const save = document.querySelector(".simpan");
+
+    save.onclick = ((e)=>{
+        e.preventDefault()
+        
+        let name = document.querySelector('.pName').value;
+        let price = document.querySelector('.harga').value;
+        let stock = document.querySelector('.stok').value;
+        let productId = localStorage.getItem('productId')
+
+        let data = {
+            "productId" : productId,
+            "nama_product" : name,   
+            "stok" : stock,
+            "harga" : price
+        }
+
+         fetch('http://dev-story.my.id:3011/store/update/product',{
+          method : 'post',
+          headers: {
+            'Content-Type' : 'application/json',
+            'auth-token': localStorage.getItem('token')
+          },
+          body: JSON.stringify(data)
+        })
+        .then(async res => {
+          let response = await res.json();
+          console.log(response)
+          if (response.status === 'ok'){
+            //window.location.href = 'http://dev-story.my.id:3011/profileSeller.html'
+            window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/profileSeller.html'
+          }
+        })
+    })
+  </script>
 </body>
 
 </html>

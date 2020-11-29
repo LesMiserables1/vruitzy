@@ -34,24 +34,24 @@
         </div>
 
         <ul class="nav-list">
-          <li class="nav-item">
-            <a href="index.html" class="nav-link">Home</a>
-          </li>
-          <li class="nav-item">
-            <a href="product.html" class="nav-link">Products</a>
-          </li>
-          <li class="nav-item">
-            <a href="#about" class="nav-link">About</a>
-          </li>
-          <li class="nav-item">
-            <a href="login.html" class="nav-link">Login</a>
-          </li>
-          <li class="nav-item">
-            <a href="register.html" class="nav-link">Register</a>
-          </li>
-          <li class="nav-item">
-            <a href="cart.html" class="nav-link icon"><i class="bx bx-shopping-bag"></i></a>
-          </li>
+            <li class="nav-item">
+                <a href="index.html" class="nav-link">Home</a>
+              </li>
+              <li class="nav-item">
+                <a href="product.html" class="nav-link">Products</a>
+              </li>
+              <li class="nav-item">
+                <a href="profileBuyer.html" class="nav-link">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a href="cart.html" class="nav-link">Cart</a>
+              </li>
+              <li class="nav-item">
+                <a href="awal.html" class="nav-link">Logout</a>
+              </li>
+              <li class="nav-item">
+                <a href="cart.html" class="nav-link icon"><i class="bx bx-shopping-bag"></i></a>
+            </li>
         </ul>
       </div>
 
@@ -68,7 +68,7 @@
   <!-- Payment Methods-->
   <div class="profile">
       <h1>My Cart</h1>
-      <h2>PAYMENT ID : #0000</h2>
+      <h2>CUSTOMER PAYMENT</h2>
       <div class="data">
           <div class="kiri">
               <p>SELECT PAYMENT METHOD</p>
@@ -85,11 +85,10 @@
             <p>TOTAL PAYMENT</p>
             <p>PHONE NUMBER</p>
         </div>
-        <div class="kanan">
-          <p>: #0000</p>
+        <div class="kanan disini">
+          <!-- <p>: #0000</p>
           <p>: Rp. xxxx</p>
-          <p>: <input type="text" required></p>
-
+          <p>: <input type="text" required></p> -->
       </div>
     </div>
     <div class="pMethod">
@@ -147,6 +146,56 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
   <!-- Custom Script -->
   <script src="./js/index.js"></script>
+
+  <script>
+    //nampilin info payment
+    let hasil = document.querySelector('.disini')
+      let orderId =  localStorage.getItem('orderId')
+      let totalharga = localStorage.getItem('totalharga')
+    console.log(orderId)
+    console.log(totalharga)
+       
+        hasil.innerHTML = 
+            `
+          <p>: #000${orderId} </p>
+          <p>: Rp${totalharga}</p>
+          <p>: <input type="text" required></p>
+      `
+
+
+    const payBtn = document.querySelector('.checkout')
+      payBtn.onclick = ((e)=>{
+        e.preventDefault()
+        console.log('hello')
+        //window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/profileBuyer.html'
+        let data = {
+            "orderId" : orderId,
+            
+        }
+
+        fetch('http://dev-story.my.id:3011/customer/order/payment', {
+
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': localStorage.getItem('token')
+          },
+          body: JSON.stringify(data)
+        })
+          .then(async res => {
+            let response = await res.json();
+            console.log(response)
+            if(response.status === "failed"){
+              alert("Saldo tidak cukup!")
+            }
+            window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/profileBuyer.html';
+            //window.location.href = 'http://dev-story.my.id:3011/profileBuyer.html';
+          })
+
+
+      });
+  
+  </script>
 </body>
 
 </html>

@@ -64,9 +64,9 @@
   <!-- Cart Items -->
   <div class="container-md cart" style="border-bottom: 3px solid #1fce08; padding-bottom: 3%;" id="in" style="margin-top: 1%;">
     <h1 style="margin-bottom: 1%; color:#1b8a0d; font-size: 5rem;">STATUS : IN</h1>
-    <table>
+    <table class="status-in">
       <tr>
-        <th>Product</th>
+        <th>Orders</th>
         <th>Address</th>
         <th>Payment</th>
         <th>Update Status</th>
@@ -81,9 +81,13 @@
               <br />
               <span>Amount: 2kg</span><br />
               <span>Delivery ID: #000</span>
+              
             </div>
+            
           </div>
+          
         </td>
+        
         <td>
             <p>From: Alamat Seller</p>
             <span>To: Alamat Buyer</span>
@@ -98,6 +102,7 @@
             <button style="padding: 10%; color: #fff; background-color: #1fce08; border-radius: 50px; font-size: 1.5rem; font-weight: 700; border: 2px solid #1fce08;" >DONE</button>
         </td>
       </tr>
+      
       <tr>
         <td>
           <div class="cart-info">
@@ -208,11 +213,13 @@
       </tr>
     </table>
   </div>
+
+
   <div class="container-md cart" style="border-bottom: 3px solid #1fce08; padding-bottom: 3%;" id="on">
     <h1 style="margin-bottom: 1%; color:#1b8a0d; font-size: 5rem;">STATUS : ON DELIVERY</h1>
-    <table>
+    <table class="status-ondeliv">
       <tr>
-        <th>Product</th>
+        <th>Orders</th>
         <th>Address</th>
         <th>Payment</th>
         <th>Update Status</th>
@@ -354,11 +361,14 @@
       </tr>
     </table>
   </div>
+
+
+
   <div class="container-md cart" style="border-bottom: 3px solid #1fce08; padding-bottom: 3%;" id="sampai">
     <h1 style="margin-bottom: 1%; color:#1b8a0d; font-size: 5rem;">STATUS : DELIVERED</h1>
-    <table>
+    <table class="status-delivered">
       <tr>
-        <th>Product</th>
+        <th>Orders</th>
         <th>Address</th>
         <th>Payment</th>
       </tr>
@@ -532,6 +542,196 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
   <!-- Custom Script -->
   <script src="./js/index.js"></script>
+
+  <script>
+    
+    let data1 = {
+            "filter" : "IN"
+        }
+
+    let data2 = {
+            "filter" : "ON DELIVERY"
+        }
+
+    let data3 = {
+            "filter" : "DELIVERED"
+        }
+
+      function updateStatus(status) {
+          let status_baru = status
+          let data = {
+            "status" : status_baru
+          }
+
+            fetch('http://dev-story.my.id:3011/shipment/update/details', {
+
+              method: 'post',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+            })
+              .then(async res => {
+                let response = await res.json();
+                console.log(response)
+                if(response.status == 'ok'){
+                  window.location.href = 'http://dev-story.my.id:3011/deliveryList.html';
+                }
+              })   
+      }
+
+    fetch('http://dev-story.my.id:3011/retrieve/shipment/details', {
+
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': localStorage.getItem('token')
+      },
+          body: JSON.stringify(data1)
+
+      })
+      .then(async res => {
+        let response = await res.json();
+        console.log(response)
+        let hasil = document.querySelector('.status-in')
+        if(response.status == 'ok'){
+          response.data.forEach(shipping => {
+          hasil.innerHTML += 
+            `<tr>
+              <td>
+                <div class="cart-info">
+                  <img src="./images/Oranges.jpg" alt="">
+                  <div>
+                    <p>Order ID: #${shipping.order.id}</p>
+                    <span>Price: Rp${shipping.order.total_harga}</span>
+                    <br />
+                    <span>Tanggal Masuk: ${shipping.updatedAt}</span><br />
+                    <span>Delivery ID: #${shipping.id}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                  <p>Sender: ${shipping.alamat_sender}</p>
+                  <span>Receiver: ${shipping.alamat_receiver} </span>
+              </td>
+              <td>
+                  <p>${shipping.fee}</p>
+                  <br />
+                  <span>${shipping.createdAt}</span>
+              </td>
+              <td>
+                  <button onclick="updateStatus('ON DELIVERY');" style="padding: 10%; color: #fff; background-color: #1fce08; border-radius: 50px; font-size: 1.5rem; font-weight: 700; border: 2px solid #1fce08;" >ON DELIVERY</button>
+              </td>
+            </tr>
+              
+              `
+          })
+        }
+      })
+
+
+      fetch('http://dev-story.my.id:3011/retrieve/shipment/details', {
+
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token')
+        },
+            body: JSON.stringify(data2)
+
+        })
+        .then(async res => {
+          let response = await res.json();
+          console.log(response)
+          let hasil = document.querySelector('.status-ondeliv')
+          if(response.status == 'ok'){
+            response.data.forEach(shipping => {
+            hasil.innerHTML += 
+              `<tr>
+                <td>
+                  <div class="cart-info">
+                    <img src="./images/Oranges.jpg" alt="">
+                    <div>
+                      <p>Order ID: #${shipping.order.id}</p>
+                      <span>Price: Rp${shipping.order.total_harga}</span>
+                      <br />
+                      <span>Tanggal Masuk: ${shipping.updatedAt}</span><br />
+                      <span>Delivery ID: #${shipping.id}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                    
+                    <p>Sender: ${shipping.alamat_sender}</p>
+                    <span>Receiver: ${shipping.alamat_receiver} </span>
+                </td>
+                <td>
+                    <p>${shipping.fee}</p>
+                    <br />
+                    <span>${shipping.createdAt}</span>
+                </td>
+                <td>
+                    <button onclick="updateStatus('DELIVERED');" style="padding: 10%; color: #fff; background-color: #1fce08; border-radius: 50px; font-size: 1.5rem; font-weight: 700; border: 2px solid #1fce08;" >DELIVERED</button>
+                </td>
+              </tr>
+                
+                `
+            })
+          }
+        })
+
+        fetch('http://dev-story.my.id:3011/retrieve/shipment/details', {
+
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': localStorage.getItem('token')
+          },
+              body: JSON.stringify(data3)
+
+          })
+          .then(async res => {
+            let response = await res.json();
+            console.log(response)
+            let hasil = document.querySelector('.status-delivered')
+            if(response.status == 'ok'){
+              response.data.forEach(shipping => {
+              hasil.innerHTML += 
+                `<tr>
+                  <td>
+                    <div class="cart-info">
+                      <img src="./images/Oranges.jpg" alt="">
+                      <div>
+                        <p>Order ID: #${shipping.order.id}</p>
+                        <span>Price: Rp${shipping.order.total_harga}</span>
+                        <br />
+                        <span>Tanggal Masuk: ${shipping.updatedAt}</span><br />
+                        <span>Delivery ID: #${shipping.id}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                      
+                    <p>Sender: ${shipping.alamat_sender}</p>
+                    <span>Receiver: ${shipping.alamat_receiver} </span>
+                  </td>
+                  <td>
+                      <p>${shipping.fee}</p>
+                      <br />
+                      <span>${shipping.createdAt}</span>
+                  </td>
+                  <td>
+                      <button style="padding: 10%; color: #fff; background-color: #1fce08; border-radius: 50px; font-size: 1.5rem; font-weight: 700; border: 2px solid #1fce08;" >DONE</button>
+                  </td>
+                </tr>
+                  
+                  `
+              })
+            }
+          })
+
+  </script>
+
 </body>
 
 </html>

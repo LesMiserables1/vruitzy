@@ -454,7 +454,9 @@ app.post('/transport/register', async (req, res) => {
         const transport = await model.courier.create({
             nama_courier: req.body.nama_courier,
             email: req.body.email,
-            password: passwordHash
+            password: passwordHash,
+            alamat: req.body.alamat
+            
         })
         return res.send({
             status: "ok",
@@ -661,7 +663,8 @@ app.post('/customer/create/order', verifyToken, async (req, res) => {
         { where: { id: order.id } }
     )
     return res.send({
-        status: 'ok'
+        status: 'ok',
+        orderId: order.id
     })
 })
 

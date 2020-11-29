@@ -39,7 +39,7 @@
             <a href="#" class="nav-link">Profile</a>
           </li>
           <li class="nav-item">
-            <a href="deliveryList" class="nav-link">Delivery List</a>
+            <a href="deliveryList.html" class="nav-link">Delivery List</a>
           </li>
           <li class="nav-item">
             <a href="awal.html" class="nav-link">Logout</a>
@@ -63,22 +63,22 @@
       <h1>My Profile</h1>
       <div class="data">
           <div class="kiri">
+              
               <p>EMAIL</p>
-              <p>NAME</p>
-              <p>VEHICLE</p>
+              <p>NAME</p>          
               <p>ADDRESS</p>
               <p>VRUITZYPAY</p>
           </div>
           <div class="kanan">
             <p>: email@email.com</p>
             <p>: nama</p>
-            <p>: jenis kendaraan</p>
+         
             <p>: jalan alamat</p>
             <p>: saldo</p>
         </div>
       </div>
   </div>
-  <!-- My order history-->
+  <!-- My order history
   <div class="orderHistory">
     <h1>My Delivery List</h1>
     <div class="pid">
@@ -123,7 +123,7 @@
         </div>
         <div class="hargaDelivery">Delivery Price : Rp.xxxx</div>
     </div>
-</div>
+</div> -->
 
 
 
@@ -173,6 +173,31 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
   <!-- Custom Script -->
   <script src="./js/index.js"></script>
+  <script>
+      fetch('http://dev-story.my.id:3011/transport/retrieve/data', {
+
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token')
+        }
+
+        })
+        .then(async res => {
+          let response = await res.json();
+          console.log(response)
+          let hasil = document.querySelector('.kanan')
+          if(response.status == 'ok'){
+            hasil.innerHTML = 
+              `<p> ${response.data.email}</p>
+                <p> ${response.data.nama_courier}</p>
+                <p> ${response.data.alamat}</p>
+                <p> Rp${response.data.saldo}</p>
+                
+                `
+          }
+        })
+  </script>
 </body>
 
 </html>

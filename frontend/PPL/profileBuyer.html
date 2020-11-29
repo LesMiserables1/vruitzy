@@ -72,30 +72,54 @@
       <div class="data">
           <div class="kiri">
               <p>EMAIL</p>
-              <p>USERNAME</p>
-              <p>NAME</p>
-              <p>ADDRESS</p>
-              <p>VRUITZYPAY</p>
+              <p>USERNAME      :</p>
+              <p>NAME     :</p>
+              <p>ADDRESS   :</p><br>
+              <p>VRUITZYPAY:</p>
           </div>
           <div class="kanan">
-            <p>: email@email.com</p>
-            <p>: Username</p>
-            <p>: nama</p>
-            <p>: jalan alamat</p>
-            <p>: saldo</p>
+            <p> email@email.com</p>
+            <p> Username</p>
+            <p> nama</p>
+            <p> jalan alamat</p>
+            <p> saldo</p>
         </div>
       </div>
   </div>
   <!-- My order history-->
   <div class="orderHistory">
     <h1>My Order History</h1>
-    <div class="pid">
-        <h2>Payment ID : #0000</h2>
+    <!-- <div class="line"></div> -->
+    <!-- <div class="pid">
+        <h2>Order ID : #0000</h2>
         <p>Tanggal</p>
     </div>
     <div class="pesanan">
         <div class="satu">
             <img src="./images/Apple.jpg" alt="">
+        </div>
+        <div class="dua">
+            <p>Total Harga:</p>
+            <p>Payment Status:</p>
+            <p>Shipping status:</p>
+        </div>
+        <div class="tiga">
+            <p>Jumlah</p>
+        </div>
+        <div class="empat">
+          <p>Harga</p>
+      </div>
+    </div>
+    <div class="line"></div>
+    <div class="pid">
+        <h2>Order ID : #0000</h2>
+        <p>Tanggal</p>
+    </div>
+    <div class="pesanan">
+        <div class="satu">
+            <p>Total Harga</p>
+            <p>Payment Status:</p>
+            <p>Shipping status:</p>
         </div>
         <div class="dua">
             <p>Nama Product</p>
@@ -106,7 +130,7 @@
         <div class="empat">
           <p>Harga</p>
       </div>
-    </div>
+    </div> -->
 </div>
 
 
@@ -157,6 +181,80 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
   <!-- Custom Script -->
   <script src="./js/index.js"></script>
+
+  <script>
+      fetch('http://dev-story.my.id:3011/customer/retrieve/data', {
+
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token')
+        }
+        
+        })
+        .then(async res => {
+          let response = await res.json();
+          console.log(response)
+          let hasil = document.querySelector('.kanan')
+          if(response.status == 'ok'){
+            hasil.innerHTML = 
+              `<p> ${response.data.email}</p>
+                <p> ${response.data.username}</p>
+                <p> ${response.data.nama}</p>
+                <p> ${response.data.alamat}</p>
+                <p> Rp${response.data.saldo}</p>
+                
+                `
+          }
+        })
+
+        fetch('http://dev-story.my.id:3011/customer/retrieve/order', {
+
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token')
+        }
+
+        })
+        .then(async res => {
+          let response = await res.json();
+          console.log(response)
+          let hasil = document.querySelector('.orderHistory')
+          if(response.status == 'ok'){
+            response.data.forEach(order => {
+              hasil.innerHTML += 
+                  `<div class="line"></div>
+                  <div class="pid">
+                      <h2>Order ID : #${order.id}</h2>
+                      <p>${order.createdAt}</p>
+                  </div>
+                  <div class="pesanan">
+                      <div class="satu">
+                          <img src="./images/Apple.jpg" alt="">
+                      </div>
+                      <div class="dua">
+                          <p>Total Harga    :</p>
+                          <p>Payment Status :</p>
+                          <p>Shipping status:</p>
+                      </div>
+                      <div class="tiga">
+                          <p>Rp${order.total_harga}</p>
+                          <p>${order.status}</p>
+                          <p>${order.shipping_detail.status}</p>
+                      </div>
+                      
+                  </div>  
+                  `
+            })
+          }
+        })
+    
+    
+    </script>
+
+
+
 </body>
 
 </html>

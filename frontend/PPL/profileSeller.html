@@ -41,7 +41,7 @@
             <a href="orderList.html" class="nav-link">Order List</a>
           </li>
           <li class="nav-item">
-            <a href="index.html" class="nav-link">Logout</a>
+            <a href="awal.html" class="nav-link">Logout</a>
           </li>
          
         </ul>
@@ -62,11 +62,12 @@
       <h1>My Profile</h1>
       <div class="data">
           <div class="kiri">
-              <p>STORE NAME</p>
               <p>STORE ID</p>
+              <p>STORE NAME</p>
+              <p>ADDRESS</p><br>
               <p>START DATE</p>
               <p>REVENUE</p>
-              <p>VRUITZYPAY</p>
+              
           </div>
           <div class="kanan">
             <p>: Nama Toko</p>
@@ -81,13 +82,14 @@
   <div class="myProduct">
     <h1>My Product</h1>
     <div class="product-center container">
+      
         <div class="product">
             <div class="product-header">
                 <img src="./images/Apple.jpg" alt="">
                 <ul class="icons">
-                  <a href="editProduct.html"><span><i class="fas fa-edit"></i></span></a>
-                    </a>
-                    <span><i class="fas fa-trash-alt"></i></span>
+                  <a><span><i onclick="editProduct()" class="fas fa-edit"></i></span></a>
+                 
+                  <span><i onclick="editProduct()" class="fas fa-trash-alt"></i></span>
                 </ul>
             </div>
             <div class="product-footer">
@@ -128,9 +130,10 @@
                 <h4 class="price">$50</h4>
             </div>
         </div>
-        <div class="addProduct">
-            <a href="addProduct.html"><i class="fas fa-plus"></i></a>
-        </div>
+     
+        <!-- <div class="addProduct">
+            <a><i class="fas fa-plus"></i></a>
+        </div> -->
     </div>
 </div>
 
@@ -182,6 +185,105 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
   <!-- Custom Script -->
   <script src="./js/index.js"></script>
-</body>
+  
+  <script>
+      fetch('http://dev-story.my.id:3011/store/retrieve/data', {
+    
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token')
+        }
+    
+        })
+        .then(async res => {
+          let response = await res.json();
+          console.log(response)
+          let hasil = document.querySelector('.kanan')
+          if(response.status == 'ok'){
+            hasil.innerHTML = 
+              `<p> ${response.data.id}</p>
+                <p> ${response.data.nama_toko}</p>
+                <p> ${response.data.alamat}</p>
+                <p> ${response.data.createdAt}</p>
+                <p> Rp${response.data.saldo}</p>
+                
+           `
+          }
+        })
+        
+        function deleteProduct(id) {
+              let productId = id
+              let data = {
+                "productId" : id
+              }
+    
+                fetch('http://dev-story.my.id:3011/store/delete/product', {
+    
+                  method: 'post',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('token')
+                  },
+                  body: JSON.stringify(data)
+                })
+                  .then(async res => {
+                    let response = await res.json();
+                    console.log(response)
+                    if(response.status == 'ok'){
+                      window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/profileSeller.html';
+                      //window.location.href = 'http://dev-story.my.id:3011/profileSeller.html';
+                    }
+                  })   
+          }
+    
+          function editProduct(id) {
+              let productId = id
+              localStorage.setItem('productId', id)
+              window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/editProduct.html';
+              //window.location.href = 'http://dev-story.my.id:3011/editProduct.html';   
+          }
+    
+        fetch('http://dev-story.my.id:3011/store/get/products', {
+    
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': localStorage.getItem('token')
+          }
+    
+          })
+          .then(async res => {
+            let response = await res.json();
+            console.log(response)
+            let hasil = document.querySelector('.product-center')
+            if(response.status == 'ok'){
+              response.data.forEach(product => {
+              hasil.innerHTML += 
+                `<div class="product">
+                <div class="product-header">
+                    <img src="./images/Apple.jpg" alt="">
+    
+                    <ul class="icons">
+                      <a><span><i onclick="editProduct('${product.id}')" class="fas fa-edit"></i></span></a>
+                        <span><i onclick="deleteProduct('${product.id}')" class="fas fa-trash-alt"></i></span>
+                    </ul>
+                </div>
+                <div class="product-footer">
+                    <h3>${product.nama_product}</h3>
+                    
+                    <h4 class="price">Rp${product.harga}</h4>
+                </div>
+              </div>`
+              })
 
+              hasil.innerHTML += `<div class="addProduct">
+                  <a href="addProduct.html"><i class="fas fa-plus"></i></a>
+                  </div>`
+            }
+          })
+      </script>
+</body>
+  
 </html>
+    
