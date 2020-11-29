@@ -192,7 +192,10 @@ app.post('/customer/retrieve/order',verifyToken,async(req,res)=>{
                 model.shipping_details,
                 {
                     model : model.order_details,
-                    include : model.product
+                    include : [{
+                        model : model.product,
+                        include : model.store
+                    }]
                 }
                 ],
             where : { customerId : req.decode.id}
