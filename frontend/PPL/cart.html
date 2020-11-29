@@ -14,6 +14,16 @@
   <!-- Custom StyleSheet -->
   <link rel="stylesheet" href="./css/styles.css" />
   <title>Your Cart</title>
+  <style>
+      .aaa:hover{
+          color: white;
+          background-color: rgb(133, 235, 133);
+      }
+      .bbb:checked + label{
+          background: green;
+          color: rgb(0, 0, 0);
+      }
+  </style>
 </head>
 
 <body>
@@ -73,7 +83,7 @@
       <h1>Store: </h1>
     </div>
 
-    <table class="cartItems">
+    <table class="cartItems" style="border-bottom: 3px solid green;">
       <tr>
         <th>Product</th>
         <th>Quantity</th>
@@ -155,7 +165,29 @@
         <td>$60.00</td> 
       </tr>-->
     </table>
-
+    <ul>
+            <li style="margin-top: 3%; border: 2px solid green; padding-bottom: 15px; color: green; width: 20%; text-align: center; font-weight: 700;" class="aaa">
+                <input type='radio' style="visibility:hidden;" value='1' name='radio' id='radio1' class="bbb"/>
+                <label style="cursor: pointer;" for='radio1'>
+                    <p>Transport 1</p>
+                    <p>Harga</p>
+                </label>
+            </li>
+            <li style="margin-top: 3%; border: 2px solid green; padding-bottom: 15px; color: green; width: 20%; text-align: center; font-weight: 700;" class="aaa">
+                <input type='radio' style="visibility:hidden;" value='2' name='radio'  id='radio2' class="bbb"/>
+                <label style="cursor: pointer;" for='radio2'>
+                    <p>Transport 2</p>
+                    <p>Harga</p>
+                </label>
+            </li>
+            <li style="margin-top: 3%; border: 2px solid green; padding-bottom: 15px; color: green; width: 20%; text-align: center; font-weight: 700;" class="aaa">
+                <input type='radio' style="visibility:hidden;" value='3' name='radio'  id='radio3' class="bbb"/>
+                <label style="cursor: pointer;" for='radio3'>
+                    <p>Transport 3</p>
+                    <p>Harga</p>
+                </label>
+            </li>
+        </ul>
     <div class="total-price">
       <table>
         <tr>
