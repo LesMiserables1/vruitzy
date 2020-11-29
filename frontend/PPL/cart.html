@@ -14,7 +14,19 @@
   <!-- Custom StyleSheet -->
   <link rel="stylesheet" href="./css/styles.css" />
   <title>Your Cart</title>
+  <style>
+    .aaa:hover{
+        color: white;
+        background-color: rgb(133, 235, 133);
+    }
+    .bbb:checked + label{
+        background: green;
+        color: rgb(0, 0, 0);
+    }
+  </style>
 </head>
+
+
 
 <body>
   <!-- Navigation -->
@@ -69,9 +81,7 @@
   <!-- Cart Items -->
 
   <div class="container-md cart">
-    <div class="namastore">
-      <h1>Store: </h1>
-    </div>
+    
 
     <table class="cartItems">
       <tr>
@@ -154,8 +164,35 @@
         <td><input type="number" value="1" min="1"></td>
         <td>$60.00</td> 
       </tr>-->
+      <div class="disini">
+        
+      </div>
     </table>
+        <ul>
+          <li style="margin-top: 3%; border: 2px solid green; padding-bottom: 15px; color: green; width: 20%; text-align: center; font-weight: 700;" class="aaa">
+              <input type='radio' onclick="saveTransport1()" style="visibility:hidden;" value='1' name='radio' id='radio1' class="bbb"/>
+              <label style="cursor: pointer;" for='radio1'>
+                  <p>JNE</p>
+                  <p>Rp20000</p>
+              </label>
+          </li>
 
+          <li style="margin-top: 3%; border: 2px solid green; padding-bottom: 15px; color: green; width: 20%; text-align: center; font-weight: 700;" class="aaa">
+              <input type='radio' onclick="saveTransport2()" style="visibility:hidden;" value='2' name='radio'  id='radio2' class="bbb"/>
+              <label style="cursor: pointer;" for='radio2'>
+                  <p>JNT</p>
+                  <p>Rp15000</p>
+              </label>
+          </li>
+
+          <!-- <li style="margin-top: 3%; border: 2px solid green; padding-bottom: 15px; color: green; width: 20%; text-align: center; font-weight: 700;" class="aaa">
+              <input type='radio' style="visibility:hidden;" value='3' name='radio'  id='radio3' class="bbb"/>
+              <label style="cursor: pointer;" for='radio3'>
+                  <p>Transport 3</p>
+                  <p>Harga</p>
+              </label>
+          </li> -->
+      </ul>
     <div class="total-price">
       <table>
         <!-- <tr>
@@ -228,15 +265,31 @@
 
 
   <script>
+    var shipmentId=1;
+    var delivfee=1
+    function saveTransport1() {
+         shipmentId = 1;
+         delivfee=20000
+      }
+
+      function saveTransport2() {
+        shipmentId = 2;
+        delivfee=15000
+     }
+    
+
+
     let hasil = document.querySelector('.cartItems')
-    let namastore = document.querySelector('.namastore')
-    let delivfee = 0
+    
+    
     var cart = JSON.parse(localStorage.getItem("cart"));
+   
     console.log(cart)
+
     var i;
     if (cart.length !== 0) {
       let total_harga = 0
-      delivfee = 15000
+      
       let details = []
       let promises = []
       for (i = 0; i < cart.length; i++) {
@@ -270,16 +323,20 @@
       }));
       Promise.all(promises)
         .then(async res => {
+          
           for(let i = 0; i < res.length; ++i){
             let jumlah = cart[i][1];
             let response = await res[i].json()
+            //let toko = response.data.store.nama_toko
+           // console.log(toko)
             console.log(response)
           if (response.status == 'ok') {
             let hargapro = jumlah * response.data.harga
             total_harga += hargapro
             console.log(hargapro)
             console.log(total_harga)
-            namastore.innterHTML = `<h1>Store: ${response.data.store.nama_toko} </h1>`
+            
+            
             hasil.innerHTML +=
               `<tr>
                     <td>
@@ -297,13 +354,15 @@
                     <td>${hargapro}</td>
                   </tr>`
           }
+          
         }
-      
+       
         
         let totalfix = total_harga + delivfee
         localStorage.setItem('totalharga', totalfix)
         let total = document.querySelector('.total-price')
         total.innerHTML = `<table>
+          
           <tr>
             <td>Subtotal</td>
             <td>Rp${total_harga}</td>
@@ -322,11 +381,12 @@
         const checkoutBtn = document.querySelector('.checkout')
       checkoutBtn.onclick = ((e) => {
         e.preventDefault()
-
+        console.log(shipmentId)
         let new_order = {
           "order_details": details,
-          "typeShipmentId": 1
+          "typeShipmentId": shipmentId
         }
+        console.log(details)
 
         fetch('http://dev-story.my.id:3011/customer/create/order', {
 
@@ -340,10 +400,10 @@
           .then(async res => {
             let response = await res.json();
             console.log(response)
-            //localStorage.setItem('orderId', 15)
-            localStorage.setItem('orderId', response.orderId)
+            console.log("disini")
+            localStorage.setItem('orderId', response.orderId) 
             console.log(response.orderId)
-            window.location.href = "file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/payment.html"
+            //window.location.href = "file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/payment.html"
             //window.location.href = 'http://dev-story.my.id:3011/payment.html';
           })
 

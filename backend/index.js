@@ -648,8 +648,8 @@ app.post('/customer/create/order', verifyToken, async (req, res) => {
     let customer = await model.customer.findByPk(order.customerId)
 
     let ship = await model.shipping_details.create({
-        alamat_sender: customer.alamat,
-        alamat_receiver: store.alamat,
+        alamat_sender: store.alamat,
+        alamat_receiver: customer.alamat,
         orderId: order.id,
         typeShipmentId: body.typeShipmentId
     })
