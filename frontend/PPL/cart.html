@@ -266,17 +266,43 @@
 
   <script>
     var shipmentId=1;
-    var delivfee=1
+    var delivfee=0
     function saveTransport1() {
          shipmentId = 1;
          delivfee=20000
+         let fee = document.querySelector('.fee')
+         fee.innerHTML = 
+            `<td>Delivery fee (Rp)</td>
+            <td>${delivfee}</td>`
+        //
+        //console.log(baru)
+        var harga = parseInt(document. getElementById("harga").textContent)
+        let baru = delivfee+harga
+        let fix = document.querySelector('.totalfix')
+         fix.innerHTML = 
+            `<td>Total Price (Rp) </td>
+            <td>${baru}</td>`    
+        localStorage.setItem('totalharga', baru)
       }
 
       function saveTransport2() {
-        shipmentId = 2;
-        delivfee=15000
-     }
-    
+         shipmentId = 2;
+         delivfee=15000
+         let fee = document.querySelector('.fee')
+         fee.innerHTML = 
+            `<td>Delivery fee (Rp)</td>
+            <td>${delivfee}</td>`
+        //
+        //console.log(baru)
+        var harga = parseInt(document. getElementById("harga").textContent)
+        let baru = delivfee+harga
+        let fix = document.querySelector('.totalfix')
+         fix.innerHTML = 
+            `<td>Total Price (Rp) </td>
+            <td>${baru}</td>`    
+        localStorage.setItem('totalharga', baru)
+      }
+
 
 
     let hasil = document.querySelector('.cartItems')
@@ -359,21 +385,21 @@
        
         
         let totalfix = total_harga + delivfee
-        localStorage.setItem('totalharga', totalfix)
+        
         let total = document.querySelector('.total-price')
         total.innerHTML = `<table>
           
           <tr>
-            <td>Subtotal</td>
-            <td>Rp${total_harga}</td>
+            <td>Subtotal (Rp)</td>
+            <td id="harga">${total_harga}</td>
           </tr>
-          <tr>
-            <td>Delivery fee</td>
+          <tr class="fee">
+            <td>Delivery fee (Rp)</td>
             <td>${delivfee}</td>
           </tr>
-          <tr>
-            <td>Total Price</td>
-            <td>Rp${totalfix}</td>
+          <tr class="totalfix">
+            <td>Total Price (Rp)</td>
+            <td>${totalfix}</td>
           </tr>
         </table>
         <a href="payment.html" class="checkout btn">Proceed To Checkout</a>`
@@ -400,11 +426,11 @@
           .then(async res => {
             let response = await res.json();
             console.log(response)
-            console.log("disini")
+           
             localStorage.setItem('orderId', response.orderId) 
-            console.log(response.orderId)
+           
             //window.location.href = "file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/payment.html"
-            //window.location.href = 'http://dev-story.my.id:3011/payment.html';
+            window.location.href = 'http://dev-story.my.id:3011/payment.html';
           })
 
 

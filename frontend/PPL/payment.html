@@ -167,7 +167,7 @@
       payBtn.onclick = ((e)=>{
         e.preventDefault()
         console.log('hello')
-        //window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/profileBuyer.html'
+        
         let data = {
             "orderId" : orderId,
             
@@ -188,8 +188,8 @@
             if(response.status === "failed"){
               alert("Saldo tidak cukup!")
             }
-            window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/profileBuyer.html';
-            //window.location.href = 'http://dev-story.my.id:3011/profileBuyer.html';
+            //window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/profileBuyer.html';
+            window.location.href = 'http://dev-story.my.id:3011/profileBuyer.html';
           })
 
 

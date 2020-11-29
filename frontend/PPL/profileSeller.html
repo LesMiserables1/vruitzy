@@ -231,8 +231,8 @@
                     let response = await res.json();
                     console.log(response)
                     if(response.status == 'ok'){
-                      window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/profileSeller.html';
-                      //window.location.href = 'http://dev-story.my.id:3011/profileSeller.html';
+                      //window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/profileSeller.html';
+                      window.location.href = 'http://dev-story.my.id:3011/profileSeller.html';
                     }
                   })   
           }
@@ -240,8 +240,8 @@
           function editProduct(id) {
               let productId = id
               localStorage.setItem('productId', id)
-              window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/editProduct.html';
-              //window.location.href = 'http://dev-story.my.id:3011/editProduct.html';   
+              //window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/editProduct.html';
+              window.location.href = 'http://dev-story.my.id:3011/editProduct.html';   
           }
     
         fetch('http://dev-story.my.id:3011/store/get/products', {

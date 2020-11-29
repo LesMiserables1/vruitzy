@@ -655,6 +655,8 @@ app.post('/customer/create/order', verifyToken, async (req, res) => {
     })
     let typeShipment = await model.typeShipment.findByPk(ship.typeShipmentId)
     let fee = typeShipment.fee
+    ship.fee = fee
+    await ship.save()
     //itung total harga, update total harga di order
     var total = await model.order_details.sum('harga', { where: { orderId: order.id } });
     total = total + fee
