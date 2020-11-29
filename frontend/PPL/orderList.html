@@ -293,7 +293,7 @@
                   </table>
                 
                   <div style="margin-top: 2%; color: #1a810c;">
-                    <h2>Delivery Fee    : ${order.shipping_detail.fee}</h2>
+                   <!-- <h2>Delivery Fee    : {order.shipping_detail.fee}</h2> -->
                     <h2>Total Price     : ${order.total_harga}</h2>
                     <h2>Payment Status  : ${order.status}</h2>
                     <h2>Payment Date    : ${order.payment_date}</h2>
@@ -322,13 +322,6 @@
 
             })
 
-//                 let titikbarang = document.querySelector('.satu')
-//                 let titikjumlah = document.querySelector('.dua')
-
-//                 order.order_details.forEach(details =>{
-//                   titikbarang.innerHTML += `<p>${details.product.nama_product}</p>`
-//                   titikjumlah.innerHTML += `<p>${details.jumlah}</p>`
-//                 })          -->
 
           })
         }

@@ -235,7 +235,7 @@
                           <h1>ORDER ID: #000${order.id}</h1>
                           <h2 style="margin-left: 55%;">${order.createdAt}</h2>
                         </div>
-                        <h2>Store Name: {order.store.nama}</h2>
+                        <!-- <h2>Store Name: {order.store.nama_toko}</h2> -->
                         
                       </div>
                         <table class="${order.id}" style="border-bottom: 3px solid #1fce08;" >
@@ -248,7 +248,7 @@
                       </table>
                     
                       <div style="margin-top: 2%; color: #1a810c;">
-                        <h2>Delivery Fee    : ${order.shipping_detail.fee}</h2>
+                        <!--<h2>Delivery Fee    : {order.shipping_detail.fee}</h2>-->
                         <h2>Total Price     : ${order.total_harga}</h2>
                         <h2>Payment Status  : ${order.status}</h2>
                         <h2>Payment Date    : ${order.payment_date}</h2>

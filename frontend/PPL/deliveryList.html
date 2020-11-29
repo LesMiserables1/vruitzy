@@ -68,7 +68,7 @@
       <tr>
         <th>Orders</th>
         <th>Address</th>
-        <th>Payment</th>
+        <th>Payment Time</th>
         <th>Update Status</th>
       </tr>
       <!-- <tr>
@@ -221,7 +221,7 @@
       <tr>
         <th>Orders</th>
         <th>Address</th>
-        <th>Payment</th>
+        <th>Payment Time</th>
         <th>Update Status</th>
       </tr>
       <!-- <tr>
@@ -370,7 +370,7 @@
       <tr>
         <th>Orders</th>
         <th>Address</th>
-        <th>Payment</th>
+        <th>Payment Time</th>
         <th>Update Status</th>
       </tr>
       <!-- <tr>
@@ -617,11 +617,14 @@
                 </div>
               </td>
               <td>
-                  <p>Sender: ${shipping.alamat_sender}</p>
-                  <span>Receiver: ${shipping.alamat_receiver} </span>
+                  <p>Reciever: ${shipping.order.customer.nama}</p>
+                  <p>${shipping.alamat_sender}</p>
+                  <br />
+                  <p>Sender: ${shipping.order.store.nama_toko} </p>
+                  <p>${shipping.alamat_receiver} </p>
               </td>
               <td>
-                  <p>${shipping.fee}</p>
+                  <!-- <p>${shipping.fee}</p> -->
                   <br />
                   <span>${shipping.createdAt}</span>
               </td>
@@ -667,12 +670,14 @@
                   </div>
                 </td>
                 <td>
-                    
-                    <p>Sender: ${shipping.alamat_sender}</p>
-                    <span>Receiver: ${shipping.alamat_receiver} </span>
+                    <p>Reciever: ${shipping.order.customer.nama}</p>
+                  <p>${shipping.alamat_sender}</p>
+                  <br />
+                  <p>Sender: ${shipping.order.store.nama_toko} </p>
+                  <p>${shipping.alamat_receiver} </p>
                 </td>
                 <td>
-                    <p>${shipping.fee}</p>
+                    <!-- <p>${shipping.fee}</p> -->
                     <br />
                     <span>${shipping.createdAt}</span>
                 </td>
@@ -718,11 +723,14 @@
                   </td>
                   <td>
                       
-                    <p>Sender: ${shipping.alamat_sender}</p>
-                    <span>Receiver: ${shipping.alamat_receiver} </span>
+                      <p>Reciever: ${shipping.order.customer.nama}</p>
+                  <p>${shipping.alamat_sender}</p>
+                  <br />
+                  <p>Sender: ${shipping.order.store.nama_toko} </p>
+                  <p>${shipping.alamat_receiver} </p>
                   </td>
                   <td>
-                      <p>${shipping.fee}</p>
+                      <!-- <p>${shipping.fee}</p> -->
                       <br />
                       <span>${shipping.createdAt}</span>
                   </td>
