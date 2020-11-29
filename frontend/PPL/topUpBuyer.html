@@ -70,8 +70,8 @@
   <div style="text-align: center;" class="fullHeight">
     <h1 style="font-size: 5rem; color: rgb(7, 116, 7); margin-top:12%; margin-bottom: 3%; ">TOP UP VRUITZYPAY</h1>
     <form style="margin-bottom: 13%;">
-        <input style="font-size: 3rem; padding-right: 1%; padding-left: 2%; width:30%; height: 50px; border: 2px solid rgb(7, 116, 7); border-radius: 20px;" type="number" id="topUp" name="topUp" min="10000" placeholder="Enter Amount" step="1000"><br><br>
-        <input style="font-size: 2rem; font-weight: 600; border-radius: 20px; width: 12%; height: 50px; margin-top: 3%; border: 2px solid rgb(7, 116, 7); background-color: rgb(7, 116, 7); color: #fff;" type="submit" value="TOP UP">
+        <input class="amount" style="font-size: 3rem; padding-right: 1%; padding-left: 2%; width:30%; height: 50px; border: 2px solid rgb(7, 116, 7); border-radius: 20px;" type="number" id="topUp" name="topUp" min="10000" placeholder="Enter Amount" step="1000"><br><br>
+        <input class="tombol" style="font-size: 2rem; font-weight: 600; border-radius: 20px; width: 12%; height: 50px; margin-top: 3%; border: 2px solid rgb(7, 116, 7); background-color: rgb(7, 116, 7); color: #fff;" type="submit" value="TOP UP">
     </form>
   </div>
 
@@ -121,6 +121,41 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
   <!-- Custom Script -->
   <script src="./js/index.js"></script>
+  <script>
+
+  const topup = document.querySelector(".tombol");
+
+    topup.onclick = ((e)=>{
+      e.preventDefault()
+      
+      let amount = document.querySelector('.amount').value;
+     
+
+      let data = {
+          "saldo" : amount
+      }
+
+      fetch('http://dev-story.my.id:3011/customer/topup', {
+
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token')
+        },
+        body: JSON.stringify(data)
+      })
+        .then(async res => {
+          let response = await res.json();
+          console.log(response)
+          if(response.status == 'ok'){
+            //window.location.href = 'http://dev-story.my.id:3011/profileBuyer.html'
+            window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/profileBuyer.html'
+          }
+        })
+        
+
+    });
+  </script>
 </body>
 
 </html>

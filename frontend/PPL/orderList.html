@@ -59,6 +59,50 @@
 
   <!-- Cart Items -->
   <h1 style="text-align: center; font-size: 5rem; color: #1a810c;">ORDER LIST</h1>
+  
+  <div class="container-md cart" style="border-bottom: 3px solid #1fce08; padding-bottom: 3%; border: 3px solid #1a810c; padding: 3%; border-radius: 50px;">
+    <!-- <div style="margin-bottom: 1%; color: #1a810c;">
+      <div style="display: flex; width: 100%; margin-bottom: 1%;">
+        <h1>ORDER ID: #00011</h1>
+        <h2 style="margin-left: 55%;">Tanggal</h2>
+      </div>
+      <h2>Customer Name: Nama</h2>
+      <h2>Address: Alamat</h2>
+    </div>
+    <table style="border-bottom: 3px solid #1fce08;" >
+      <tr>
+        <th>Product</th>
+        <th>Amount (Kg)</th>
+        <th>Price</th>
+      </tr>
+      <tr>
+        <td>
+          <div class="cart-info">
+            <img src="./images/Apple.jpg" alt="">
+            <div>
+              <p>Apple</p>
+            </div>
+          </div>
+        </td>
+        <td>
+            <p>2 Kg</p>
+        </td>
+        <td>
+            <p>Rp. 20000</p>
+        </td>
+      </tr>
+    </table>
+    <div style="margin-top: 2%; color: #1a810c;">
+      <h2>Delivery Fee    : Rp.10000</h2>
+      <h2>Total Price     : Rp.200000</h2>
+      <h2>Payment Status  : PAID</h2>
+      <h2>Payment Date    : 1/12/2020</h2>
+      <h2>Shipping Status : ON DELIVERY</h2>
+    </div> -->
+
+  </div>
+
+<!-- 
   <div class="container-md cart" style="border-bottom: 3px solid #1fce08; padding-bottom: 3%; border: 3px solid #1a810c; padding: 3%; border-radius: 50px;">
     <div style="margin-bottom: 1%; color: #1a810c;">
       <div style="display: flex; width: 100%; margin-bottom: 1%;">
@@ -163,112 +207,7 @@
       <h2>Shipping Status : ON DELIVERY</h2>
     </div>
 
-  </div>
-  <div class="container-md cart" style="border-bottom: 3px solid #1fce08; padding-bottom: 3%; border: 3px solid #1a810c; padding: 3%; border-radius: 50px;">
-    <div style="margin-bottom: 1%; color: #1a810c;">
-      <div style="display: flex; width: 100%; margin-bottom: 1%;">
-        <h1>ORDER ID: #00011</h1>
-        <h2 style="margin-left: 55%;">Tanggal</h2>
-      </div>
-      <h2>Customer Name: Nama</h2>
-      <h2>Address: Alamat</h2>
-    </div>
-    <table style="border-bottom: 3px solid #1fce08;" >
-      <tr>
-        <th>Product</th>
-        <th>Amount (Kg)</th>
-        <th>Price</th>
-      </tr>
-      <tr>
-        <td>
-          <div class="cart-info">
-            <img src="./images/Apple.jpg" alt="">
-            <div>
-              <p>Apple</p>
-            </div>
-          </div>
-        </td>
-        <td>
-            <p>2 Kg</p>
-        </td>
-        <td>
-            <p>Rp. 20000</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="cart-info">
-            <img src="./images/Lemons.png" alt="">
-            <div>
-              <p>Lemons</p>
-            </div>
-          </div>
-        </td>
-        <td>
-           <p>2 Kg</p>
-        </td>
-        <td>
-          <p>Rp. 20000</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="cart-info">
-            <img src="./images/Cucumber.jpg" alt="">
-            <div>
-              <p>Cucumber</p>
-            </div>
-          </div>
-        </td>
-        <td>
-          <p>2 Kg</p>
-        </td>
-        <td>
-          <p>Rp. 20000</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="cart-info">
-            <img src="./images/Tomatoes.jpg" alt="">
-            <div>
-              <p>Tomatoes</p>
-            </div>
-          </div>
-        </td>
-        <td>
-          <p>2 Kg</p>
-        </td>
-        <td>
-          <p>Rp. 20000</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="cart-info">
-            <img src="./images/Oranges.jpg" alt="">
-            <div>
-              <p>Oranges</p>
-            </div>
-          </div>
-        </td>
-        <td>
-          <p>2 Kg</p>
-        </td>
-        <td>
-          <p>Rp. 20000</p>
-        </td>
-      </tr>
-    </table>
-    <div style="margin-top: 2%; color: #1a810c;">
-      <h2>Delivery Fee    : Rp.10000</h2>
-      <h2>Total Price     : Rp.200000</h2>
-      <h2>Payment Status  : PAID</h2>
-      <h2>Payment Date    : 1/12/2020</h2>
-      <h2>Shipping Status : ON DELIVERY</h2>
-    </div>
-
-  </div>
+  </div> -->
 
 
   <!-- Footer -->
@@ -331,63 +270,65 @@
       .then(async res => {
         let response = await res.json();
         console.log(response)
-        let hasil = document.querySelector('.disini')
+        let hasil = document.querySelector('.cart')
+        hasil.innerHTML = ''
         if(response.status == 'ok'){
           response.data.forEach(order => {
-            hasil.innerHTML += 
-            `<div class="line"></div>
-                <div class="pid">
-                    <h2>Order ID : #${order.id}</h2>
-                    <p>${order.createdAt}</p>
-                </div>
-                <div class="pengiriman">
-                    <div class="satu">
-                        <p>PRODUCTS</p>
+            hasil.innerHTML += `<div class="container-md cart" style="border-bottom: 3px solid #1fce08; padding-bottom: 3%; border: 3px solid #1a810c; padding: 3%; border-radius: 50px;">
+                  <div style="margin-bottom: 1%; color: #1a810c;">
+                    <div style="display: flex; width: 100%; margin-bottom: 1%;">
+                      <h1>ORDER ID: #000${order.id}</h1>
+                      <h2 style="margin-left: 55%;">${order.createdAt}</h2>
                     </div>
-                    <div class="dua">
-                        <p>AMOUNT</p>
-                    </div>
-                    <div class="tiga">
-                        <!-- <p>PRICE</p> -->
-                        
-                    </div>
-                    <div class="empat">
-                    <!-- <p>BUYER ADDRESS</p> -->
-                </div>
-                </div>
-                <div class="kirim">
-                    <div class="pengiriman">
-                        <div class="satu">
-                            <p>barang1</p>
-                            <p>barang2</p>
-                            <p>barang3</p>
+                    <h2>Customer Name: ${order.customer.nama}</h2>
+                    <h2>Address: ${order.customer.alamat}</h2>
+                  </div>
+                    <table class="${order.id}" style="border-bottom: 3px solid #1fce08;" >
+                    <tr>
+                      <th>Product</th>
+                      <th>Amount (Kg)</th>
+                      <th>Price</th>
+                    </tr>
+                  
+                  </table>
+                
+                  <div style="margin-top: 2%; color: #1a810c;">
+                    <h2>Delivery Fee    : ${order.shipping_detail.fee}</h2>
+                    <h2>Total Price     : ${order.total_harga}</h2>
+                    <h2>Payment Status  : ${order.status}</h2>
+                    <h2>Payment Date    : ${order.payment_date}</h2>
+                    <h2>Shipping Status : ${order.shipping_detail.status}</h2>
+                  </div>
+                  </div>`                 
+            let masuk = document.querySelector("[class=" + CSS.escape(order.id) + "]")
+            order.order_details.forEach(details => {
+              masuk.innerHTML += `<tr>
+                      <td>
+                        <div class="cart-info">
+                          <img src="./images/Apple.jpg" alt="">
+                          <div>
+                            <p>${details.product.nama_product}</p>
+                          </div>
                         </div>
-                        <div class="dua">
-                            <p>jumlah barang1</p>
-                            <p>jumlah barang2</p>
-                            <p>jumlah barang3</p>
-                            
-                        </div>
-                        <div class="tiga">
-                            <!-- <p>Alamat Toko</p> -->                           
-                        </div>
-                        <div class="empat1">
-                        <!-- <p>Alamat Buyer</p> -->
-                    </div>
-                    </div>
-                    <div class="hargaDelivery">Delivery fee : Rp${order.shopping_details.fee}</div>
-                    <div class="hargaDelivery">Total Price : Rp${order.total_harga}</div>
-                    <div class="hargaDelivery">PAID at : ${order.payment_date}</div>
-                    <div class="hargaDelivery">Delivery Status : PAID</div>
-                </div> `
+                      </td>
+                      <td>
+                          <p>${details.jumlah}kg</p>
+                      </td>
+                      <td>
+                          <p>Rp${details.harga}</p>
+                      </td>
+                    </tr>`
 
-                let titikbarang = document.querySelector('.satu')
-                let titikjumlah = document.querySelector('.dua')
 
-                order.order_details.forEach(details =>{
-                  titikbarang.innerHTML += `<p>${details.product.nama_product}</p>`
-                  titikjumlah.innerHTML += `<p>${details.jumlah}</p>`
-                })         
+            })
+
+//                 let titikbarang = document.querySelector('.satu')
+//                 let titikjumlah = document.querySelector('.dua')
+
+//                 order.order_details.forEach(details =>{
+//                   titikbarang.innerHTML += `<p>${details.product.nama_product}</p>`
+//                   titikjumlah.innerHTML += `<p>${details.jumlah}</p>`
+//                 })          -->
 
           })
         }

@@ -71,7 +71,7 @@
         <th>Payment</th>
         <th>Update Status</th>
       </tr>
-      <tr>
+      <!-- <tr>
         <td>
           <div class="cart-info">
             <img src="./images/Apple.jpg" alt="">
@@ -210,7 +210,7 @@
         <td>
             <button style="padding: 10%; color: #fff; background-color: #1fce08; border-radius: 50px; font-size: 1.5rem; font-weight: 700; border: 2px solid #1fce08;" >DONE</button>
         </td>
-      </tr>
+      </tr> -->
     </table>
   </div>
 
@@ -224,7 +224,7 @@
         <th>Payment</th>
         <th>Update Status</th>
       </tr>
-      <tr>
+      <!-- <tr>
         <td>
           <div class="cart-info">
             <img src="./images/Apple.jpg" alt="">
@@ -358,7 +358,7 @@
         <td>
             <button style="padding: 10%; color: #fff; background-color: #1fce08; border-radius: 50px; font-size: 1.5rem; font-weight: 700; border: 2px solid #1fce08;" >DONE</button>
         </td>
-      </tr>
+      </tr> -->
     </table>
   </div>
 
@@ -371,8 +371,9 @@
         <th>Orders</th>
         <th>Address</th>
         <th>Payment</th>
+        <th>Update Status</th>
       </tr>
-      <tr>
+      <!-- <tr>
         <td>
           <div class="cart-info">
             <img src="./images/Apple.jpg" alt="">
@@ -491,7 +492,7 @@
             <br />
             <span>Tanggal</span>
         </td>
-      </tr>
+      </tr> -->
     </table>
   </div>
 
@@ -557,25 +558,30 @@
             "filter" : "DELIVERED"
         }
 
-      function updateStatus(status) {
+      function updateStatus(status, id) {
+        console.log(status)
           let status_baru = status
           let data = {
-            "status" : status_baru
+            "status" : status_baru,
+            "shipmentId" : id
           }
-
+          console.log(status)
             fetch('http://dev-story.my.id:3011/shipment/update/details', {
-
               method: 'post',
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'auth-token': localStorage.getItem('token')
               },
               body: JSON.stringify(data)
             })
               .then(async res => {
+                console.log(status)
                 let response = await res.json();
+                console.log(status)
                 console.log(response)
                 if(response.status == 'ok'){
-                  window.location.href = 'http://dev-story.my.id:3011/deliveryList.html';
+                  //window.location.href = 'http://dev-story.my.id:3011/deliveryList.html';
+                  window.location.href = 'file:///C:/Users/Sherine%20Devi/PPL/vruitzy/frontend/PPL/deliveryList.html'
                 }
               })   
       }
@@ -620,7 +626,7 @@
                   <span>${shipping.createdAt}</span>
               </td>
               <td>
-                  <button onclick="updateStatus('ON DELIVERY');" style="padding: 10%; color: #fff; background-color: #1fce08; border-radius: 50px; font-size: 1.5rem; font-weight: 700; border: 2px solid #1fce08;" >ON DELIVERY</button>
+                  <button onclick="updateStatus('ON DELIVERY', '${shipping.id}');" style="padding: 10%; color: #fff; background-color: #1fce08; border-radius: 50px; font-size: 1.5rem; font-weight: 700; border: 2px solid #1fce08;" >ON DELIVERY</button>
               </td>
             </tr>
               
@@ -671,7 +677,7 @@
                     <span>${shipping.createdAt}</span>
                 </td>
                 <td>
-                    <button onclick="updateStatus('DELIVERED');" style="padding: 10%; color: #fff; background-color: #1fce08; border-radius: 50px; font-size: 1.5rem; font-weight: 700; border: 2px solid #1fce08;" >DELIVERED</button>
+                    <button onclick="updateStatus('DELIVERED','${shipping.id}');" style="padding: 10%; color: #fff; background-color: #1fce08; border-radius: 50px; font-size: 1.5rem; font-weight: 700; border: 2px solid #1fce08;" >DELIVERED</button>
                 </td>
               </tr>
                 
