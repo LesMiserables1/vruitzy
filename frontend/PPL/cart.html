@@ -67,10 +67,12 @@
   </nav>
 
   <!-- Cart Items -->
-  
+
   <div class="container-md cart">
-    <div class="namastore"><h1>Store: </h1></div>
-    
+    <div class="namastore">
+      <h1>Store: </h1>
+    </div>
+
     <table class="cartItems">
       <tr>
         <th>Product</th>
@@ -179,44 +181,44 @@
 
   <!-- Footer -->
   <footer class="footer-distributed">
- 
+
     <div class="footer-left">
-  
-    <h3>Vruitzy</h3>
-  
-    <p class="footer-links">
-      Vruitzy is an e-commerce platform that
-      offers high-quality fresh fruits while
-      staying at home!
-    </p>
-  
-    
+
+      <h3>Vruitzy</h3>
+
+      <p class="footer-links">
+        Vruitzy is an e-commerce platform that
+        offers high-quality fresh fruits while
+        staying at home!
+      </p>
+
+
     </div>
-  
+
     <div class="footer-center">
 
     </div>
     <div class="footer-right">
-  
-    <p class="footer-company-about">
-    <span>Follow Us!</span>
-    </p>
-  
-    <div class="footer-icons">
-  
-    <a href="#"><i class="fa fa-facebook"></i></a>
-    <a href="#"><i class="fa fa-twitter"></i></a>
-    <a href="#"><i class="fa fa-linkedin"></i></a>
-    <a href="#"><i class="fa fa-github"></i></a>
-  
-    </div>
-  
+
+      <p class="footer-company-about">
+        <span>Follow Us!</span>
+      </p>
+
+      <div class="footer-icons">
+
+        <a href="#"><i class="fa fa-facebook"></i></a>
+        <a href="#"><i class="fa fa-twitter"></i></a>
+        <a href="#"><i class="fa fa-linkedin"></i></a>
+        <a href="#"><i class="fa fa-github"></i></a>
+
+      </div>
+
     </div>
     <p class="footer-company-name">Vruitzy &copy; 2020</p>
-    </footer>
-    <footer>
-      <p>2020 &copy; Vruitzy | All rights reserved.</p>
-    </footer>
+  </footer>
+  <footer>
+    <p>2020 &copy; Vruitzy | All rights reserved.</p>
+  </footer>
   <!-- End Footer -->
 
   <!-- GSAP -->
@@ -224,51 +226,58 @@
   <!-- Custom Script -->
   <script src="./js/index.js"></script>
 
-  
+
   <script>
-      let hasil = document.querySelector('.cartItems')
-      let namastore = document.querySelector('.namastore')
-       
-      var cart = JSON.parse(localStorage.getItem("cart"));
-      var i;
-      if (cart !== null) {
+    let hasil = document.querySelector('.cartItems')
+    let namastore = document.querySelector('.namastore')
+
+    var cart = JSON.parse(localStorage.getItem("cart"));
+    var i;
+    if (cart !== null) {
       let total_harga = 0
 
       let details = []
-
+      let promises = []
       for (i = 0; i < cart.length; i++) {
-            let productId = cart[i][0];
+        let productId = cart[i][0];
+        let jumlah = cart[i][1];
+
+        let buat_details = {
+          "productId": productId,
+          "jumlah": jumlah
+        }
+        details.push(buat_details)
+
+        let data = {
+          "productId": productId
+        }
+        promises.push(fetch('http://dev-story.my.id:3011/customer/retrieve/product', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': localStorage.getItem('token')
+          },
+          body: JSON.stringify(data)
+        }))
+      }
+      const awaitJson = (responses) => Promise.all(responses.map(response => {
+        if(response.ok) return response.json();
+        throw new Error(response.statusText);
+      }));
+      Promise.all(promises)
+        .then(async res => {
+          for(let i = 0; i < res.length; ++i){
             let jumlah = cart[i][1];
-
-            let buat_details = {
-                  "productId" : productId,
-                  "jumlah" : jumlah
-            }
-            details.push(buat_details)
-
-            let data = {
-                "productId" : productId
-            }
-
-            fetch('http://dev-story.my.id:3011/customer/retrieve/product', {
-              method: 'post',
-              headers: {
-                'Content-Type': 'application/json',
-                'auth-token': localStorage.getItem('token')
-              },
-              body: JSON.stringify(data)
-            })
-              .then(async res => {
-                let response = await res.json();
-                console.log(response)
-                if(response.status == 'ok'){
-                  let hargapro = jumlah*response.data.harga
-                  total_harga += hargapro
-                  console.log(hargapro)
-                  console.log(total_harga)
-                  namastore.innterHTML = `<h1>Store: ${response.data.store.nama_toko} </h1>`
-                   hasil.innerHTML += 
-                    `<tr>
+            let response = await res[i].json()
+            console.log(response)
+          if (response.status == 'ok') {
+            let hargapro = jumlah * response.data.harga
+            total_harga += hargapro
+            console.log(hargapro)
+            console.log(total_harga)
+            namastore.innterHTML = `<h1>Store: ${response.data.store.nama_toko} </h1>`
+            hasil.innerHTML +=
+              `<tr>
                     <td>
                       <div class="cart-info">
                         <img src="./images/Apple.jpg" alt="">
@@ -283,13 +292,12 @@
                     <td>${jumlah}</td>
                     <td>${hargapro}</td>
                   </tr>`
-                }
-              })
-      }
-
+          }
+        }
+        })
       console.log(total_harga)
       let delivfee = 15000
-      let totalfix = total_harga+delivfee
+      let totalfix = total_harga + delivfee
       localStorage.setItem('totalharga', totalfix)
       let total = document.querySelector('.total-price')
       total.innerHTML = `<table>
@@ -308,14 +316,14 @@
       </table>
       <a href="payment.html" class="checkout btn">Proceed To Checkout</a>`
 
-      
+
       const checkoutBtn = document.querySelector('.checkout')
-      checkoutBtn.onclick = ((e)=>{
+      checkoutBtn.onclick = ((e) => {
         e.preventDefault()
-        
+
         let new_order = {
-          "order_details" : details,
-          "typeShipmentId" : 1
+          "order_details": details,
+          "typeShipmentId": 1
         }
 
         fetch('http://dev-story.my.id:3011/customer/create/order', {
@@ -340,15 +348,15 @@
       });
 
 
-      
-      
-      }
 
 
-        
-      
-      
-   </script>
+    }
+
+
+
+
+
+  </script>
 
 
 </body>
