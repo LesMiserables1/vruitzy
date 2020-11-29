@@ -455,11 +455,7 @@ app.post('/transport/register', async (req, res) => {
             nama_courier: req.body.nama_courier,
             email: req.body.email,
             password: passwordHash,     
-<<<<<<< HEAD
-            "alamat": req.body.alamat,
-=======
             alamat: req.body.alamat
->>>>>>> 9c01911f3bde19887e337cdc00e9b5e7fcd84e28
             
         })
         return res.send({
