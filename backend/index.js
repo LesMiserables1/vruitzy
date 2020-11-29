@@ -215,7 +215,7 @@ app.post('/customer/topup', verifyToken, async (req, res) => {
         })
     }
     let customer = await model.customer.findByPk(req.decode.id)
-    customer.saldo = customer.saldo + body.saldo
+    customer.saldo = customer.saldo + parseInt(body.saldo)
     customer.save()
     return res.send({
         status: 'ok'
@@ -435,6 +435,7 @@ app.post('/store/retrieve/order',verifyToken,async(req,res)=>{
         {
             include : [
                 model.shipping_details,
+                model.customer,
                 {
                     model : model.order_details,
                     include : model.product
