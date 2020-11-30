@@ -68,7 +68,7 @@
       <tr>
         <th>Orders</th>
         <th>Address</th>
-        <th>Payment Time</th>
+        <th>Payment</th>
         <th>Update Status</th>
       </tr>
       <!-- <tr>
@@ -221,7 +221,7 @@
       <tr>
         <th>Orders</th>
         <th>Address</th>
-        <th>Payment Time</th>
+        <th>Payment</th>
         <th>Update Status</th>
       </tr>
       <!-- <tr>
@@ -370,7 +370,7 @@
       <tr>
         <th>Orders</th>
         <th>Address</th>
-        <th>Payment Time</th>
+        <th>Payment</th>
         <th>Update Status</th>
       </tr>
       <!-- <tr>
@@ -608,11 +608,11 @@
                 <div class="cart-info">
                   <img src="./images/Oranges.jpg" alt="">
                   <div>
-                    <p>Order ID: #${shipping.order.id}</p>
+                    <p>ID: #${shipping.id}</p>
                     <span>Price: Rp${shipping.order.total_harga}</span>
                     <br />
                     <span>Tanggal Masuk: ${shipping.updatedAt}</span><br />
-                    <span>Delivery ID: #${shipping.id}</span>
+                    
                   </div>
                 </div>
               </td>
@@ -624,7 +624,7 @@
                   <p>${shipping.alamat_receiver} </p>
               </td>
               <td>
-                  <!-- <p>${shipping.fee}</p> -->
+                <p>Rp${shipping.typeShipment.fee}</p>
                   <br />
                   <span>${shipping.createdAt}</span>
               </td>
@@ -661,11 +661,11 @@
                   <div class="cart-info">
                     <img src="./images/Oranges.jpg" alt="">
                     <div>
-                      <p>Order ID: #${shipping.order.id}</p>
+                      <p>ID: #${shipping.id}</p>
                       <span>Price: Rp${shipping.order.total_harga}</span>
                       <br />
                       <span>Tanggal Masuk: ${shipping.updatedAt}</span><br />
-                      <span>Delivery ID: #${shipping.id}</span>
+                      
                     </div>
                   </div>
                 </td>
@@ -677,7 +677,7 @@
                   <p>${shipping.alamat_receiver} </p>
                 </td>
                 <td>
-                    <!-- <p>${shipping.fee}</p> -->
+                  <p>Rp${shipping.typeShipment.fee}</p>
                     <br />
                     <span>${shipping.createdAt}</span>
                 </td>
@@ -713,11 +713,11 @@
                     <div class="cart-info">
                       <img src="./images/Oranges.jpg" alt="">
                       <div>
-                        <p>Order ID: #${shipping.order.id}</p>
+                        <p>ID: #${shipping.id}</p>
                         <span>Price: Rp${shipping.order.total_harga}</span>
                         <br />
                         <span>Tanggal Masuk: ${shipping.updatedAt}</span><br />
-                        <span>Delivery ID: #${shipping.id}</span>
+                        
                       </div>
                     </div>
                   </td>
@@ -730,7 +730,7 @@
                   <p>${shipping.alamat_receiver} </p>
                   </td>
                   <td>
-                      <!-- <p>${shipping.fee}</p> -->
+                      <p>Rp${shipping.typeShipment.fee}</p>
                       <br />
                       <span>${shipping.createdAt}</span>
                   </td>

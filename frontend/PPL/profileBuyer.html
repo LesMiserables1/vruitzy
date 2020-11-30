@@ -235,7 +235,7 @@
                           <h1>ORDER ID: #000${order.id}</h1>
                           <h2 style="margin-left: 55%;">${order.createdAt}</h2>
                         </div>
-                        <!-- <h2>Store Name: {order.store.nama_toko}</h2> -->
+                        <h2>Store Name: ${order.order_details[0].product.store.nama_toko}</h2>
                         
                       </div>
                         <table class="${order.id}" style="border-bottom: 3px solid #1fce08;" >
