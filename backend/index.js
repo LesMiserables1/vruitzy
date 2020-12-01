@@ -751,4 +751,4 @@ app.post('/customer/order/payment/', async (req, res) => {
 //         "data": order,
 //     })
 // })
-app.listen(process.env.APP_PORT)
+app.listen(process.env.APP_PORT || 3000)
